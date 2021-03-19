@@ -140,5 +140,5 @@ dmypy.json
 cython_debug/
 
 # added by me
-/venv/
-/.idea/
+venv/
+.idea/
