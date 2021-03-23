@@ -142,3 +142,4 @@ cython_debug/
 # added by me
 venv/
 .idea/
+prophecypracticum/practicumweb/migrations/

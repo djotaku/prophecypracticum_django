@@ -1,0 +1,10 @@
+{% if new_prophecy %}
+<h2>Your Prophecy has been recorded</h2>
+{% else %}
+<h2>Add a new Prophecy</h2>
+<form action ='.' method="post">
+    {{ prophecy_form.as_p}}
+    {% csrf_token %}
+    <p><input type="submit" value="Submit"></p>
+</form>
+{% endif %}
