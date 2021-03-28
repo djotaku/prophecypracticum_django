@@ -1,5 +1,6 @@
 {% if new_prophecy %}
 <h2>Your Prophecy has been recorded</h2>
+<a href="{% url 'practicumweb:home' %}">Go back to your main page</a>
 {% else %}
 <h2>Add a new Prophecy</h2>
 <form action ='.' method="post">
@@ -7,4 +8,5 @@
     {% csrf_token %}
     <p><input type="submit" value="Submit"></p>
 </form>
+<a href="{% url 'practicumweb:home' %}">Leave without recording a prophecy</a>
 {% endif %}

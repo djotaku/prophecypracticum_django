@@ -6,6 +6,21 @@
 {% if user.is_authenticated %}
 Hi, {{user.username}}!
 
+<h1>As Prophet:</h1>
+<p><a href="{% url 'practicumweb:newprophecy' %}">Create Prophecy</a></p>
+
+<p>Prophecies in Draft Status</p>
+
+<p>Published Prophecies</p>
+<ul>
+{% for published_prophecy in published_prophecies %}
+    <li>{{ published_prophecy }}</li>
+{% endfor %}
+</ul>
+<h2>As Supplicant:</h2>
+<p>Prophecies for Me</p>
+<p></p>
+
 {% else %}
 <p>You are not logged in</p>
 <a href="{% url 'login' %}">Log In</a>
