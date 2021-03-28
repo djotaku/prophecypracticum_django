@@ -26,4 +26,9 @@ def new_prophecy(request):
 def home(request):
     user = request.user
     published_prophecies = Prophecy.objects.get_queryset().filter(status='published', prophet=user)
-    return render(request, 'practicum/home.html', {'published_prophecies': published_prophecies})
+    draft_prophecies = Prophecy.objects.get_queryset().filter(status='draft', prophet=user)
+    prophecies_for_me = Prophecy.objects.get_queryset().filter(status='published', supplicant=user)
+    return render(request, 'practicum/home.html',
+                  {'published_prophecies': published_prophecies,
+                   'draft_prophecies': draft_prophecies,
+                   'prophecies_for_me': prophecies_for_me})

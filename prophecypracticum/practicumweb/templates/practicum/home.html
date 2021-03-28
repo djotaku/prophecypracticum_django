@@ -10,6 +10,11 @@ Hi, {{user.username}}!
 <p><a href="{% url 'practicumweb:newprophecy' %}">Create Prophecy</a></p>
 
 <p>Prophecies in Draft Status</p>
+<ul>
+{% for draft_prophecy in draft_prophecies %}
+    <li>{{ draft_prophecy }}</li>
+{% endfor %}
+</ul>
 
 <p>Published Prophecies</p>
 <ul>
@@ -19,7 +24,11 @@ Hi, {{user.username}}!
 </ul>
 <h2>As Supplicant:</h2>
 <p>Prophecies for Me</p>
-<p></p>
+<ul>
+{% for prophecy_for_me in prophecies_for_me %}
+    <li>{{ prophecy_for_me }}</li>
+{% endfor %}
+</ul>
 
 {% else %}
 <p>You are not logged in</p>
