@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Prophecy
 from django.contrib.auth.decorators import login_required
 from .forms import ProphecyForm
@@ -32,3 +32,14 @@ def home(request):
                   {'published_prophecies': published_prophecies,
                    'draft_prophecies': draft_prophecies,
                    'prophecies_for_me': prophecies_for_me})
+
+
+@login_required()
+def detailed_prophecy(request, year, month, day, prophet, supplicant):
+    user = request.user
+    print(f"{prophet=}")
+    print(f"{user=}")
+    print(f"{supplicant=}")
+    prophecy = get_object_or_404(Prophecy, status='published', publish__year=year, publish__month=month,
+                                 publish__day=day, prophet=user)
+    return render(request, 'practicum/detailed_prophecy.html', {'prophecy': prophecy})

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class PublishedManager(models.Manager):
@@ -25,8 +26,13 @@ class Prophecy(models.Model):
     class Meta:
         ordering = ('-publish',)
 
+    def get_absolute_url(self):
+        return reverse('practicumweb:detailed_prophecy', args=[self.publish.year, self.publish.month, self.publish.day,
+                                                               self.prophet, self.supplicant])
+
     def __str__(self):
-        return f"A prophecy by {self.prophet} for {self.supplicant} created {self.created}."
+        return f"A prophecy by {self.prophet} for {self.supplicant} created {self.publish.month}/{self.publish.day}" \
+               f"/{self.publish.year}."
 
 
 class ProphecyFeedback(models.Model):

@@ -19,7 +19,7 @@ Hi, {{user.username}}!
 <p>Published Prophecies</p>
 <ul>
 {% for published_prophecy in published_prophecies %}
-    <li>{{ published_prophecy }}</li>
+    <li><a href="{{published_prophecy.get_absolute_url}}"> {{ published_prophecy }}</a></li>
 {% endfor %}
 </ul>
 <h2>As Supplicant:</h2>
