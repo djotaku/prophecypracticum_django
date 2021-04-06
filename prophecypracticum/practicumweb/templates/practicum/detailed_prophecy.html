@@ -5,6 +5,13 @@
 <h2>Text:</h2>
 <p>{{ prophecy.prophecy_text }} </p>
 
+<p>just testing for a second here....</p>
+<form action ='.' method="post">
+    {{ prophecy_form.as_p}}
+    {% csrf_token %}
+    <p><input type="submit" value="Submit"></p></form>
+
+
 {% if feedback_added %}
 <h2>Feedback:</h2>
 <p>Rating: {{ feedback.rating }}</p>

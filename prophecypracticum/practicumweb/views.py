@@ -39,4 +39,6 @@ def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
     user = request.user
     prophecy = get_object_or_404(Prophecy, status=status, created__year=year, created__month=month,
                                  created__day=day, prophet=prophet, supplicant=supplicant)
-    return render(request, 'practicum/detailed_prophecy.html', {'prophecy': prophecy, 'status': status})
+    prophecy_form = ProphecyForm(instance=prophecy)
+    return render(request, 'practicum/detailed_prophecy.html', {'prophecy': prophecy, 'status': status,
+                                                                'prophecy_form': prophecy_form})
