@@ -12,7 +12,7 @@ Hi, {{user.username}}!
 <p>Prophecies in Draft Status</p>
 <ul>
 {% for draft_prophecy in draft_prophecies %}
-    <li>{{ draft_prophecy }}</li>
+    <li><a href="{{draft_prophecy.get_absolute_url}}">{{ draft_prophecy }}</a></li>
 {% endfor %}
 </ul>
 
@@ -26,7 +26,7 @@ Hi, {{user.username}}!
 <p>Prophecies for Me</p>
 <ul>
 {% for prophecy_for_me in prophecies_for_me %}
-    <li>{{ prophecy_for_me }}</li>
+    <li><a href="{{prophecy_for_me.get_absolute_url}}">{{ prophecy_for_me }}</a></li>
 {% endfor %}
 </ul>
 

@@ -27,12 +27,12 @@ class Prophecy(models.Model):
         ordering = ('-publish',)
 
     def get_absolute_url(self):
-        return reverse('practicumweb:detailed_prophecy', args=[self.publish.year, self.publish.month, self.publish.day,
-                                                               self.prophet, self.supplicant])
+        return reverse('practicumweb:detailed_prophecy', args=[self.created.year, self.created.month, self.created.day,
+                                                               self.prophet.id, self.supplicant.id, self.status])
 
     def __str__(self):
         return f"A prophecy by {self.prophet} for {self.supplicant} created {self.publish.month}/{self.publish.day}" \
-               f"/{self.publish.year}."
+               f"/{self.publish.year} UTC."
 
 
 class ProphecyFeedback(models.Model):

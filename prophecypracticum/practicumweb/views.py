@@ -35,11 +35,8 @@ def home(request):
 
 
 @login_required()
-def detailed_prophecy(request, year, month, day, prophet, supplicant):
+def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
     user = request.user
-    print(f"{prophet=}")
-    print(f"{user=}")
-    print(f"{supplicant=}")
-    prophecy = get_object_or_404(Prophecy, status='published', publish__year=year, publish__month=month,
-                                 publish__day=day, prophet=user)
-    return render(request, 'practicum/detailed_prophecy.html', {'prophecy': prophecy})
+    prophecy = get_object_or_404(Prophecy, status=status, created__year=year, created__month=month,
+                                 created__day=day, prophet=prophet, supplicant=supplicant)
+    return render(request, 'practicum/detailed_prophecy.html', {'prophecy': prophecy, 'status': status})
