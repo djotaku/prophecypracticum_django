@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Prophecy
+from .models import Prophecy, ProphecyFeedback
 from django.contrib.auth.decorators import login_required
 from .forms import ProphecyForm
 
@@ -36,9 +36,13 @@ def home(request):
 
 @login_required()
 def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
-    user = request.user
     prophecy = get_object_or_404(Prophecy, status=status, created__year=year, created__month=month,
                                  created__day=day, prophet=prophet, supplicant=supplicant)
     prophecy_form = ProphecyForm(instance=prophecy)
+    feedback_query = ProphecyFeedback.objects.get_queryset().filter(prophecy=prophecy.id)
+    feedback = 0
+    if feedback_query:
+        feedback = feedback_query[0]
     return render(request, 'practicum/detailed_prophecy.html', {'prophecy': prophecy, 'status': status,
-                                                                'prophecy_form': prophecy_form})
+                                                                'prophecy_form': prophecy_form,
+                                                                'feedback': feedback})
