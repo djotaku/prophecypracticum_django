@@ -1,0 +1,12 @@
+{% if new_feedback %}
+<h2>Your Feedback has been recorded</h2>
+<a href="{% url 'practicumweb:home' %}">Go back to your main page</a>
+{% else %}
+<h2>Add a feedback for your Prophecy</h2>
+<form action ='.' method="post">
+    {{ feedback_form.as_p}}
+    {% csrf_token %}
+    <p><input type="submit" value="Submit"></p>
+</form>
+<a href="{% url 'practicumweb:home' %}">Leave without recording a feedback</a>
+{% endif %}

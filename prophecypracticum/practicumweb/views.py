@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Prophecy, ProphecyFeedback
 from django.contrib.auth.decorators import login_required
-from .forms import ProphecyForm
+from .forms import ProphecyForm, ProphecyRatingFrom
 
 
 # Create your views here.
@@ -39,10 +39,34 @@ def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
     prophecy = get_object_or_404(Prophecy, status=status, created__year=year, created__month=month,
                                  created__day=day, prophet=prophet, supplicant=supplicant)
     prophecy_form = ProphecyForm(instance=prophecy)
+    what_am_i = "prophet"
+    if request.user == prophecy.supplicant:
+        what_am_i = "supplicant"
     feedback_query = ProphecyFeedback.objects.get_queryset().filter(prophecy=prophecy.id)
     feedback = 0
+    feedback_status = 0
     if feedback_query:
         feedback = feedback_query[0]
+        feedback_status = feedback.status
     return render(request, 'practicum/detailed_prophecy.html', {'prophecy': prophecy, 'status': status,
                                                                 'prophecy_form': prophecy_form,
-                                                                'feedback': feedback})
+                                                                'feedback': feedback,
+                                                                'feedback_status': feedback_status,
+                                                                'what_am_i': what_am_i})
+
+
+@login_required
+def new_feedback(request):
+    feedback = None
+
+    if request.method == "POST":
+        # A comment was posted
+        feedback_form = ProphecyRatingFrom(data=request.POST)
+        if feedback_form.is_valid():
+            # create it, but don't save to database yet
+            feedback = feedback_form.save(commit=False)
+            feedback.save()
+    else:
+        feedback_form = ProphecyForm()
+    return render(request, 'practicum/create_feedback.html',
+                  {'new_feedback': feedback, 'feedback_form': feedback_form})
