@@ -76,6 +76,13 @@ def new_feedback(request, prophecy_id):
             feedback = feedback_form.save(commit=False)
             feedback.prophecy = prophecy[0]
             feedback.save()
+            if feedback.status == "published":
+                prophet = prophecy[0].prophet
+                send_mail('You have feedback on your prophecy',
+                          'Sign in at the Prophecy Practicum site to see it.',
+                          'prophecypracticum@ericmesa.com',
+                          [prophet.email],
+                          fail_silently=False)
     else:
         feedback_form = ProphecyRatingForm()
     return render(request, 'practicum/create_feedback.html',
