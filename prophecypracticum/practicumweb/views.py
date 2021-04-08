@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.mail import send_mail
 from .models import Prophecy, ProphecyFeedback
 from django.contrib.auth.decorators import login_required
 from .forms import ProphecyForm, ProphecyRatingForm
@@ -15,7 +16,14 @@ def new_prophecy(request):
         if prophecy_form.is_valid():
             # create it, but don't save to database yet
             prophecy = prophecy_form.save(commit=False)
+            supplicant = prophecy.supplicant
             prophecy.save()
+            if prophecy.status == "published":
+                send_mail('You have a prophecy to read',
+                          'Sign in at the Prophecy Practicum site to see it.',
+                          'prophecypracticum@ericmesa.com',
+                          [supplicant.email],
+                          fail_silently=False)
     else:
         prophecy_form = ProphecyForm()
     return render(request, 'practicum/create_prophecy.html',

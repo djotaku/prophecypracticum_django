@@ -3,6 +3,9 @@
 <a href="{% url 'practicumweb:home' %}">Go back to your main page</a>
 {% else %}
 <h2>Add a new Prophecy</h2>
+
+Pressing Submit with a status of Published will send an email to your supplicant.
+
 <form action ='.' method="post">
     {{ prophecy_form.as_p}}
     {% csrf_token %}

@@ -4,7 +4,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-Hi, {{user.username}}!
+Hi, {{user.first_name}} {{user.last_name}}!
 
 <h1>As Prophet:</h1>
 <p><a href="{% url 'practicumweb:newprophecy' %}">Create Prophecy</a></p>
@@ -34,4 +34,6 @@ Hi, {{user.username}}!
 <p>You are not logged in</p>
 <a href="{% url 'login' %}">Log In</a>
 {% endif %}
+
+If you need to change your password, <a href="{% url 'password_change' %}">click here</a>.
 {% endblock %}
