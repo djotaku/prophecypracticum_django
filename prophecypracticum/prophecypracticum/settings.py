@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['prophecypracticum.ericmesa.com']
 
 
 # Application definition
@@ -126,6 +126,7 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+STATIC_ROOT = ""
 STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/practicum/'
