@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Prophecy, ProphecyFeedback
 from django.contrib.auth.decorators import login_required
-from .forms import ProphecyForm, ProphecyRatingFrom
+from .forms import ProphecyForm, ProphecyRatingForm
 
 
 # Create your views here.
@@ -56,17 +56,19 @@ def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
 
 
 @login_required
-def new_feedback(request):
+def new_feedback(request, prophecy_id):
     feedback = None
+    prophecy = Prophecy.objects.get_queryset().filter(id=prophecy_id)
 
     if request.method == "POST":
         # A comment was posted
-        feedback_form = ProphecyRatingFrom(data=request.POST)
+        feedback_form = ProphecyRatingForm(data=request.POST)
         if feedback_form.is_valid():
             # create it, but don't save to database yet
             feedback = feedback_form.save(commit=False)
+            feedback.prophecy = prophecy[0]
             feedback.save()
     else:
-        feedback_form = ProphecyForm()
+        feedback_form = ProphecyRatingForm()
     return render(request, 'practicum/create_feedback.html',
-                  {'new_feedback': feedback, 'feedback_form': feedback_form})
+                  {'new_feedback': feedback, 'feedback_form': feedback_form, "prophecy": prophecy[0]})

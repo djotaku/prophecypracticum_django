@@ -19,8 +19,8 @@
 <p>Text: {{ feedback.feedback_text }}</p>
 {% endif %}
 
-{% if what_am_i == "supplicant" %}
-<p><a href="{% url 'practicumweb:newfeedback' %}">Record your feedback?</a></p>
+{% if what_am_i == "supplicant" and feedback == 0 %}
+<p><a href="{% url 'practicumweb:newfeedback' prophecy_id=prophecy.id %}">Record your feedback?</a></p>
 {%endif%}
 
 <a href="{% url 'practicumweb:home' %}">Back to your home screen.</a>

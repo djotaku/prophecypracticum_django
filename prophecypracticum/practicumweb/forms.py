@@ -8,7 +8,7 @@ class ProphecyForm(forms.ModelForm):
         fields = ('prophecy_text', 'prophet', 'supplicant', 'status',)
 
 
-class ProphecyRatingFrom(forms.ModelForm):
+class ProphecyRatingForm(forms.ModelForm):
     class Meta:
         model = ProphecyFeedback
         fields = ('feedback_rating', 'feedback_text', 'status')

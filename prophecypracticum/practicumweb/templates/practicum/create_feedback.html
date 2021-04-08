@@ -3,6 +3,8 @@
 <a href="{% url 'practicumweb:home' %}">Go back to your main page</a>
 {% else %}
 <h2>Add a feedback for your Prophecy</h2>
+<p>The Prophecy reads:</p>
+<p>{{ prophecy.prophecy_text }}</p>
 <form action ='.' method="post">
     {{ feedback_form.as_p}}
     {% csrf_token %}
