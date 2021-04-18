@@ -46,16 +46,39 @@ def home(request):
 def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
     prophecy = get_object_or_404(Prophecy, status=status, created__year=year, created__month=month,
                                  created__day=day, prophet=prophet, supplicant=supplicant)
-    prophecy_form = ProphecyForm(instance=prophecy)
-    what_am_i = "prophet"
-    if request.user == prophecy.supplicant:
-        what_am_i = "supplicant"
-    feedback_query = ProphecyFeedback.objects.get_queryset().filter(prophecy=prophecy.id)
-    feedback = 0
-    feedback_status = 0
-    if feedback_query:
-        feedback = feedback_query[0]
-        feedback_status = feedback.status
+    feedback = None
+    feedback_status = None
+    what_am_i = None
+    if request.method == "POST":
+        # Changed from Draft to Published
+        prophecy_form = ProphecyForm(data=request.POST)
+        if prophecy_form.is_valid():
+            # create it, but don't save to database yet
+            new_status = request.POST["status"]
+            new_prophecy_text = request.POST['prophecy_text']
+            prophecy.status = new_status
+            prophecy.prophecy_text = new_prophecy_text
+            # prophecy.save(commit=False)
+            # prophecy = prophecy_form.save(commit=False)
+            supplicant = prophecy.supplicant
+            prophecy.save()
+            if prophecy.status == "published":
+                send_mail('You have a prophecy to read',
+                          'Sign in at the Prophecy Practicum site to see it.',
+                          'prophecypracticum@ericmesa.com',
+                          [supplicant.email],
+                          fail_silently=False)
+    else:
+        prophecy_form = ProphecyForm(instance=prophecy)
+        what_am_i = "prophet"
+        if request.user == prophecy.supplicant:
+            what_am_i = "supplicant"
+        feedback_query = ProphecyFeedback.objects.get_queryset().filter(prophecy=prophecy.id)
+        feedback = 0
+        feedback_status = 0
+        if feedback_query:
+            feedback = feedback_query[0]
+            feedback_status = feedback.status
     return render(request, 'practicum/detailed_prophecy.html', {'prophecy': prophecy, 'status': status,
                                                                 'prophecy_form': prophecy_form,
                                                                 'feedback': feedback,
