@@ -5,7 +5,7 @@ from .models import Prophecy, ProphecyFeedback
 class ProphecyForm(forms.ModelForm):
     class Meta:
         model = Prophecy
-        fields = ('prophecy_text', 'prophet', 'supplicant', 'status',)
+        fields = ('prophecy_text', 'status',)
 
 
 class ProphecyRatingForm(forms.ModelForm):

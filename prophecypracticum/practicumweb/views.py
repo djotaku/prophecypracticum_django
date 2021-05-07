@@ -1,22 +1,26 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.mail import send_mail
-from .models import Prophecy, ProphecyFeedback
+from .models import Prophecy, ProphecyFeedback, WeeklyLink
 from django.contrib.auth.decorators import login_required
 from .forms import ProphecyForm, ProphecyRatingForm
 
 
-# Create your views here.
 @login_required
 def new_prophecy(request):
     prophecy = None
+    prophet = request.user
+    this_week_link = WeeklyLink.objects.get_queryset().filter(prophet=prophet, sunday_date__year=2021,
+                                                              sunday_date__month=5, sunday_date__day=2)
+    supplicant = this_week_link[0].supplicant
 
     if request.method == "POST":
-        # A comment was posted
+        # A prophecy was posted
         prophecy_form = ProphecyForm(data=request.POST)
         if prophecy_form.is_valid():
             # create it, but don't save to database yet
             prophecy = prophecy_form.save(commit=False)
-            supplicant = prophecy.supplicant
+            prophecy.prophet = prophet
+            prophecy.supplicant = supplicant
             prophecy.save()
             if prophecy.status == "published":
                 send_mail('You have a prophecy to read',
@@ -58,8 +62,6 @@ def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
             new_prophecy_text = request.POST['prophecy_text']
             prophecy.status = new_status
             prophecy.prophecy_text = new_prophecy_text
-            # prophecy.save(commit=False)
-            # prophecy = prophecy_form.save(commit=False)
             supplicant = prophecy.supplicant
             prophecy.save()
             if prophecy.status == "published":

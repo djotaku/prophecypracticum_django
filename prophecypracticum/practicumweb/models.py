@@ -59,3 +59,4 @@ class WeeklyLink(models.Model):
     sunday_date = models.DateTimeField()
     prophet = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="prophecy_week")
     supplicant = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="supplicant_week")
+    objects = models.Manager()
