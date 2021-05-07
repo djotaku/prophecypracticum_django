@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.mail import send_mail
-from .models import Prophecy, ProphecyFeedback, WeeklyLink
-from django.contrib.auth.decorators import login_required
+from .models import Prophecy, ProphecyFeedback, WeeklyLink, User
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import ProphecyForm, ProphecyRatingForm
 from datetime import datetime, timedelta
+from itertools import zip_longest
 import random
 
 
@@ -122,3 +123,15 @@ def new_feedback(request, prophecy_id):
         feedback_form = ProphecyRatingForm()
     return render(request, 'practicum/create_feedback.html',
                   {'new_feedback': feedback, 'feedback_form': feedback_form, "prophecy": prophecy[0]})
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def randomizer(request):
+    if request.method == "POST":
+        users = User.objects.get_queryset()
+        randomized_prophet_pool = random.sample(list(users), len(list(users)))
+        randomized_supplicant_pool = random.sample(list(users), len(list(users)))
+        combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
+        print(list(combined_list))
+    return render(request, 'practicum/randomize.html')

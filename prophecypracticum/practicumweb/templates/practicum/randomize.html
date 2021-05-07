@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Randomize the Prophets and Supplicants</title>
+</head>
+<body>
+<p>Push the button below to randomly add supplicants to prophets.</p>
+<form action ='.' method="post">
+  {% csrf_token %}
+<p><input type="submit" value="Randomize!"></p>
+</form>
+
+<a href="{% url 'practicumweb:home' %}">Return to Home Page</a>
+</body>
+</html>

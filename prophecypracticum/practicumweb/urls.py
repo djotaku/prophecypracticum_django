@@ -10,4 +10,5 @@ urlpatterns = [
     path('<int:year>/<int:month>/<int:day>/<str:prophet>/<str:supplicant>/<str:status>/', views.detailed_prophecy,
          name='detailed_prophecy'),
     path('newfeedback/<int:prophecy_id>/', views.new_feedback, name="newfeedback"),
+    path('randomize/', views.randomizer, name="randomize"),
 ]
