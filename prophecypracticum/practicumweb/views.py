@@ -3,14 +3,23 @@ from django.core.mail import send_mail
 from .models import Prophecy, ProphecyFeedback, WeeklyLink
 from django.contrib.auth.decorators import login_required
 from .forms import ProphecyForm, ProphecyRatingForm
+from datetime import datetime, timedelta
+import random
 
 
 @login_required
 def new_prophecy(request):
     prophecy = None
     prophet = request.user
-    this_week_link = WeeklyLink.objects.get_queryset().filter(prophet=prophet, sunday_date__year=2021,
-                                                              sunday_date__month=5, sunday_date__day=2)
+    today = datetime.now()
+    today_weekday = today.weekday()
+    sunday = today
+    if today_weekday != 6:
+        while sunday.weekday() != 6:
+            sunday -= timedelta(days=1)
+    this_week_link = WeeklyLink.objects.get_queryset().filter(prophet=prophet, sunday_date__year=sunday.year,
+                                                              sunday_date__month=sunday.month,
+                                                              sunday_date__day=sunday.day)
     supplicant = this_week_link[0].supplicant
 
     if request.method == "POST":
@@ -30,8 +39,9 @@ def new_prophecy(request):
                           fail_silently=False)
     else:
         prophecy_form = ProphecyForm()
+        random_person = random.randint(0, 10)
     return render(request, 'practicum/create_prophecy.html',
-                  {'new_prophecy': prophecy, 'prophecy_form': prophecy_form})
+                  {'new_prophecy': prophecy, 'prophecy_form': prophecy_form, "random": random_person})
 
 
 @login_required()
