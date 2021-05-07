@@ -8,16 +8,22 @@ from itertools import zip_longest
 import random
 
 
-@login_required
-def new_prophecy(request):
-    prophecy = None
-    prophet = request.user
+def find_sunday():
+    """If today isn't Sunday, find the previous Sunday."""
     today = datetime.now()
     today_weekday = today.weekday()
     sunday = today
     if today_weekday != 6:
         while sunday.weekday() != 6:
             sunday -= timedelta(days=1)
+    return sunday
+
+
+@login_required
+def new_prophecy(request):
+    prophecy = None
+    prophet = request.user
+    sunday = find_sunday()
     this_week_link = WeeklyLink.objects.get_queryset().filter(prophet=prophet, sunday_date__year=sunday.year,
                                                               sunday_date__month=sunday.month,
                                                               sunday_date__day=sunday.day)
@@ -133,5 +139,8 @@ def randomizer(request):
         randomized_prophet_pool = random.sample(list(users), len(list(users)))
         randomized_supplicant_pool = random.sample(list(users), len(list(users)))
         combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
-        print(list(combined_list))
+        sunday = find_sunday()
+        for pair in combined_list:
+            database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1])
+            database_entry.save()
     return render(request, 'practicum/randomize.html')
