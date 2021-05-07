@@ -9,7 +9,6 @@ class PublishedManager(models.Manager):
         return super(PublishedManager, self).get_queryset().filter(status='published')
 
 
-# Create your models here.
 class Prophecy(models.Model):
     STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
     prophecy_text = models.TextField()
@@ -53,3 +52,10 @@ class ProphecyFeedback(models.Model):
 
     def __str__(self):
         return f'A rating for the prophecy {self.prophecy}.'
+
+
+class WeeklyLink(models.Model):
+    """Links prophet and supplicant for a week."""
+    sunday_date = models.DateTimeField()
+    prophet = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="prophecy_week")
+    supplicant = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="supplicant_week")
