@@ -141,6 +141,13 @@ def randomizer(request):
         combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
         sunday = find_sunday()
         for pair in combined_list:
-            database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1])
-            database_entry.save()
+            if pair[0] is None:
+                database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[1], supplicant=pair[1])
+                database_entry.save()
+            elif pair[1] is None:
+                database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[0])
+                database_entry.save()
+            else:
+                database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1])
+                database_entry.save()
     return render(request, 'practicum/randomize.html')
