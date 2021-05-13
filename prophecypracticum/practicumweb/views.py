@@ -21,6 +21,7 @@ def find_sunday():
 
 @login_required
 def new_prophecy(request):
+    random_person = random.randint(0, 10)
     prophecy = None
     prophet = request.user
     sunday = find_sunday()
@@ -46,7 +47,6 @@ def new_prophecy(request):
                           fail_silently=False)
     else:
         prophecy_form = ProphecyForm()
-        random_person = random.randint(0, 10)
     return render(request, 'practicum/create_prophecy.html',
                   {'new_prophecy': prophecy, 'prophecy_form': prophecy_form, "random": random_person})
 
