@@ -121,7 +121,7 @@ def new_feedback(request, prophecy_id):
             if feedback.status == "published":
                 prophet = prophecy[0].prophet
                 send_mail('You have feedback on your prophecy',
-                          'Sign in at the Prophecy Practicum site to see it.',
+                          'Sign in at http://http://prophecypracticum.ericmesa.com/accounts/login/ site to see it',
                           'prophecypracticum@ericmesa.com',
                           [prophet.email],
                           fail_silently=False)
