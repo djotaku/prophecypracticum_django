@@ -5,8 +5,7 @@
 {% if status == "published" %}
 <h2>Text:</h2>
 <p>{{ prophecy.prophecy_text }} </p>
-{% endif %}
-{% if status == "draft" %}
+{% else %}
 <form action ='.' method="post">
     {{ prophecy_form.as_p}}
     {% csrf_token %}

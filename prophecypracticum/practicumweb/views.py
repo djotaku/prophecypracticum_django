@@ -78,6 +78,7 @@ def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
             new_status = request.POST["status"]
             new_prophecy_text = request.POST['prophecy_text']
             prophecy.status = new_status
+            status = prophecy.status
             prophecy.prophecy_text = new_prophecy_text
             supplicant = prophecy.supplicant
             prophecy.save()
@@ -143,11 +144,9 @@ def randomizer(request):
         for pair in combined_list:
             if pair[0] is None:
                 database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[1], supplicant=pair[1])
-                database_entry.save()
             elif pair[1] is None:
                 database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[0])
-                database_entry.save()
             else:
                 database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1])
-                database_entry.save()
+            database_entry.save()
     return render(request, 'practicum/randomize.html')
