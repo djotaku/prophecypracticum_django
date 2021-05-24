@@ -8,7 +8,9 @@
 
 <p>The Prophecy reads:</p>
 <p>{{ prophecy.prophecy_text }}</p>
-<form action ='.' method="post">
+    Please limit your rating to between 1 and 5.
+
+    <form action ='.' method="post">
     {{ feedback_form.as_p}}
     {% csrf_token %}
     <p><input type="submit" value="Submit"></p>
