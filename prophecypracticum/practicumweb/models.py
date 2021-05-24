@@ -30,8 +30,7 @@ class Prophecy(models.Model):
                                                                self.prophet.id, self.supplicant.id, self.status])
 
     def __str__(self):
-        return f"A prophecy by {self.prophet} for {self.supplicant} created {self.publish.month}/{self.publish.day}" \
-               f"/{self.publish.year} UTC."
+        return f"A prophecy created at {self.publish.month}/{self.publish.day} {self.publish.year} UTC."
 
 
 class ProphecyFeedback(models.Model):
