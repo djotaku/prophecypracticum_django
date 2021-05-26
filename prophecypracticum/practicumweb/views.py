@@ -41,7 +41,7 @@ def new_prophecy(request):
             prophecy.save()
             if prophecy.status == "published":
                 send_mail('You have a prophecy to read',
-                          'Sign in at http://http://prophecypracticum.ericmesa.com/accounts/login/ site to see it.',
+                          'Sign in at http://prophecypracticum.ericmesa.com/accounts/login/ site to see it.',
                           'prophecypracticum@ericmesa.com',
                           [supplicant.email],
                           fail_silently=False)
@@ -84,7 +84,7 @@ def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
             prophecy.save()
             if prophecy.status == "published":
                 send_mail('You have a prophecy to read',
-                          'Sign in at http://http://prophecypracticum.ericmesa.com/accounts/login/ site to see it.',
+                          'Sign in at http://prophecypracticum.ericmesa.com/accounts/login/ site to see it.',
                           'prophecypracticum@ericmesa.com',
                           [supplicant.email],
                           fail_silently=False)
@@ -122,7 +122,7 @@ def new_feedback(request, prophecy_id):
             if feedback.status == "published":
                 prophet = prophecy[0].prophet
                 send_mail('You have feedback on your prophecy',
-                          'Sign in at http://http://prophecypracticum.ericmesa.com/accounts/login/ site to see it',
+                          'Sign in at http://prophecypracticum.ericmesa.com/accounts/login/ site to see it',
                           'prophecypracticum@ericmesa.com',
                           [prophet.email],
                           fail_silently=False)
