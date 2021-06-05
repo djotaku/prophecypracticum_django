@@ -7,6 +7,7 @@
 <body>
 <p>Push the button below to randomly add supplicants to prophets.</p>
 <form action ='.' method="post">
+    {{ user_selection_form.as_p}}
   {% csrf_token %}
 <p><input type="submit" value="Randomize!"></p>
 </form>

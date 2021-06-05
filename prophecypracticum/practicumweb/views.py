@@ -1,8 +1,9 @@
+from django import forms
 from django.shortcuts import render, get_object_or_404
 from django.core.mail import send_mail
 from .models import Prophecy, ProphecyFeedback, WeeklyLink, User
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import ProphecyForm, ProphecyRatingForm
+from .forms import ProphecyForm, ProphecyRatingForm, RandomizeForm
 from datetime import datetime, timedelta
 from itertools import zip_longest
 import random
@@ -136,7 +137,7 @@ def new_feedback(request, prophecy_id):
 @user_passes_test(lambda u: u.is_superuser)
 def randomizer(request):
     if request.method == "POST":
-        users = User.objects.get_queryset()
+        users = RandomizeForm(data=request.POST)
         randomized_prophet_pool = random.sample(list(users), len(list(users)))
         randomized_supplicant_pool = random.sample(list(users), len(list(users)))
         combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
@@ -149,4 +150,6 @@ def randomizer(request):
             else:
                 database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1])
             database_entry.save()
-    return render(request, 'practicum/randomize.html')
+    else:
+        user_selection_form = RandomizeForm()
+    return render(request, 'practicum/randomize.html', {'user_selection_form': user_selection_form})
