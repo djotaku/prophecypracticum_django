@@ -138,7 +138,7 @@ def new_feedback(request, prophecy_id):
 def randomizer(request):
     if request.method == "POST":
         user_selection_form = RandomizeForm(data=request.POST)
-        users = user_selection_form['participants'].fields.choices
+        users = user_selection_form['participants']
         print("****************")
         print(users)
         print("*****************")
