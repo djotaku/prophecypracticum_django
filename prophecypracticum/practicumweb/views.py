@@ -137,19 +137,23 @@ def new_feedback(request, prophecy_id):
 @user_passes_test(lambda u: u.is_superuser)
 def randomizer(request):
     if request.method == "POST":
-        users = RandomizeForm(data=request.POST)
-        randomized_prophet_pool = random.sample(list(users), len(list(users)))
-        randomized_supplicant_pool = random.sample(list(users), len(list(users)))
-        combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
-        sunday = find_sunday()
-        for pair in combined_list:
-            if pair[0] is None:
-                database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[1], supplicant=pair[1])
-            elif pair[1] is None:
-                database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[0])
-            else:
-                database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1])
-            database_entry.save()
+        user_selection_form = RandomizeForm(data=request.POST)
+        users = user_selection_form['participants'].fields.choices
+        print("****************")
+        print(users)
+        print("*****************")
+        #randomized_prophet_pool = random.sample(list(users), len(list(users)))
+        #randomized_supplicant_pool = random.sample(list(users), len(list(users)))
+        #combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
+        #sunday = find_sunday()
+        #for pair in combined_list:
+        #    if pair[0] is None:
+        #        database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[1], supplicant=pair[1])
+        #    elif pair[1] is None:
+        #        database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[0])
+        #    else:
+        #        database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1])
+        #    database_entry.save()
     else:
         user_selection_form = RandomizeForm()
     return render(request, 'practicum/randomize.html', {'user_selection_form': user_selection_form})
