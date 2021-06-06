@@ -138,10 +138,11 @@ def new_feedback(request, prophecy_id):
 def randomizer(request):
     if request.method == "POST":
         user_selection_form = RandomizeForm(data=request.POST)
-        users = user_selection_form['participants']
-        print("****************")
-        print(users)
-        print("*****************")
+        if user_selection_form.is_valid():
+            users = user_selection_form.cleaned_data['participants']
+            print("****************")
+            print(users)
+            print("*****************")
         #randomized_prophet_pool = random.sample(list(users), len(list(users)))
         #randomized_supplicant_pool = random.sample(list(users), len(list(users)))
         #combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
