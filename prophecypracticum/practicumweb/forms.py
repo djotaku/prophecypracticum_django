@@ -2,11 +2,6 @@ from django import forms
 from .models import Prophecy, ProphecyFeedback, User
 
 
-def create_user_choices():
-    users = User.objects.get_queryset()
-    return [(user, f"{user.first_name} {user.last_name}") for user in users]
-
-
 class ProphecyForm(forms.ModelForm):
     class Meta:
         model = Prophecy
@@ -19,12 +14,11 @@ class ProphecyRatingForm(forms.ModelForm):
         fields = ('feedback_rating', 'feedback_text', 'status')
 
 
+class RandomizedModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
+
+
 class RandomizeForm(forms.Form):
-
-    def __init__(self, *args, **kwargs):
-        super(RandomizeForm, self).__init__(*args, **kwargs)
-        self.fields['participants'] = forms.MultipleChoiceField(choices=create_user_choices(),
-                                                                widget=forms.CheckboxSelectMultiple)
-
-    class Meta:
-        fields = ('participants', )
+    participants = RandomizedModelMultipleChoiceField(queryset=User.objects.all(),
+                                                      widget=forms.CheckboxSelectMultiple)
