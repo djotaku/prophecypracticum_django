@@ -18,7 +18,7 @@
 <p>Text: {{ feedback.feedback_text }}</p>
 {% endif %}
 
-{% if what_am_i == "supplicant" and feedback == 0 %}
+{% if what_am_i == "supplicant" and feedback == 0 or feedback_status == 'draft' %}
 <p><a href="{% url 'practicumweb:newfeedback' prophecy_id=prophecy.id %}">Record your feedback?</a></p>
 {%endif%}
 

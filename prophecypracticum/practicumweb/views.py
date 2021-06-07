@@ -110,10 +110,11 @@ def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
 @login_required
 def new_feedback(request, prophecy_id):
     feedback = None
+    feedback_status = None
     prophecy = Prophecy.objects.get_queryset().filter(id=prophecy_id)
 
     if request.method == "POST":
-        # A comment was posted
+        # A feedback was posted
         feedback_form = ProphecyRatingForm(data=request.POST)
         if feedback_form.is_valid():
             # create it, but don't save to database yet
@@ -128,9 +129,14 @@ def new_feedback(request, prophecy_id):
                           [prophet.email],
                           fail_silently=False)
     else:
-        feedback_form = ProphecyRatingForm()
+        feedback_query = ProphecyFeedback.objects.get_queryset().filter(prophecy=prophecy[0].id)
+        if feedback_query:
+            feedback_form = ProphecyRatingForm(instance=feedback_query[0])
+        else:
+            feedback_form = ProphecyRatingForm()
     return render(request, 'practicum/create_feedback.html',
-                  {'new_feedback': feedback, 'feedback_form': feedback_form, "prophecy": prophecy[0]})
+                  {'new_feedback': feedback, 'feedback_form': feedback_form,
+                   "feedback_status": feedback_status, "prophecy": prophecy[0]})
 
 
 @login_required
