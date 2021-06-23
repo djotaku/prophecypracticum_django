@@ -23,7 +23,13 @@ class ProphecyFeedbackAdmin(admin.ModelAdmin):
 @admin.register(WeeklyLink)
 class WeeklyLinkAdmin(admin.ModelAdmin):
     date_hierarchy = 'sunday_date'
-    list_display = ('prophet', 'supplicant', 'sunday_date')
+    list_display = ('prophet', 'view_user_first_name', 'view_user_last_name', 'supplicant', 'sunday_date')
     list_filter = ('prophet', 'supplicant', 'sunday_date')
     raw_id_fields = ('prophet', 'supplicant',)
     ordering = ('sunday_date',)
+
+    def view_user_first_name(self, obj):
+        return obj.prophet.first_name
+
+    def view_user_last_name(self, obj):
+        return obj.prophet.last_name
