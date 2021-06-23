@@ -19,7 +19,13 @@ Hi, {{user.first_name}} {{user.last_name}}!
 <p>Published Prophecies</p>
 <ul>
 {% for published_prophecy in published_prophecies %}
-    <li><a href="{{published_prophecy.get_absolute_url}}"> {{ published_prophecy }}</a></li>
+    {%  for feedback in all_feedbacks %}
+        {%  if feedback.prophecy == published_prophecy %}
+            <li><a href="{{published_prophecy.get_absolute_url}}"> {{ published_prophecy }} There is Feedback!</a></li>
+        {% else %}
+            <li><a href="{{published_prophecy.get_absolute_url}}"> {{ published_prophecy }}</a></li>
+        {%  endif %}
+    {% endfor %}
 {% endfor %}
 </ul>
 <h2>As Supplicant:</h2>
