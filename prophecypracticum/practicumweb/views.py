@@ -59,10 +59,11 @@ def home(request):
     draft_prophecies = Prophecy.objects.get_queryset().filter(status='draft', prophet=user)
     prophecies_for_me = Prophecy.objects.get_queryset().filter(status='published', supplicant=user)
     feedbacks = ProphecyFeedback.objects.get_queryset()
+    feedback_list = [feedback.prophecy for feedback in feedbacks]
     return render(request, 'practicum/home.html',
                   {'published_prophecies': published_prophecies,
                    'draft_prophecies': draft_prophecies,
-                   'all_feedbacks': feedbacks,
+                   'feedback_list': feedback_list,
                    'prophecies_for_me': prophecies_for_me})
 
 
