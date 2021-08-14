@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Status Check</h1>
+    {% if week_name != "" %}
     <h2>Prophecy info for Practicum {{ week_name }}</h2>
     {% if prophecies_this_week %}
     <ul>
@@ -17,6 +18,18 @@
     {% endfor %}
         {%  else %}
         No one has completed any prophecies for this week.
-    {% endif %}
     </ul>
+    {% endif %}
+        {% else %}
+        <form action ='.' method="post">
+    {{ selection_form.as_p}}
+    {% csrf_token %}
+    <p><input type="submit" value="Submit"></p>
+</form>
+{% endif %}
 {% endblock %}
+<form action ='.' method="post">
+    {{ selection_form.as_p}}
+    {% csrf_token %}
+    <p><input type="submit" value="Submit"></p>
+</form>

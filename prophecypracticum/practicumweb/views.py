@@ -1,9 +1,9 @@
 from django import forms
 from django.shortcuts import render, get_object_or_404
 from django.core.mail import send_mail
-from .models import Prophecy, ProphecyFeedback, WeeklyLink, User
+from .models import Prophecy, ProphecyFeedback, WeeklyLink, PracticumNames, User
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import ProphecyForm, ProphecyRatingForm, RandomizeForm
+from .forms import ProphecyForm, ProphecyRatingForm, RandomizeForm, PracticumNamesForm
 from datetime import datetime, timedelta
 from itertools import zip_longest
 import random
@@ -172,6 +172,8 @@ def randomizer(request):
                     database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1],
                                                 week_name=week_name)
                 database_entry.save()
+            weekly_name_entry = PracticumNames(week_name=week_name)
+            weekly_name_entry.save()
     else:
         user_selection_form = RandomizeForm()
     return render(request, 'practicum/randomize.html', {'user_selection_form': user_selection_form})
@@ -180,11 +182,19 @@ def randomizer(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def status_check(request):
-    sunday = find_sunday()
-    week_name = sunday.strftime('%Y%m%d')
-    prophecies_this_week = Prophecy.objects.get_queryset().filter(week_name=week_name)
-    feedbacks = ProphecyFeedback.objects.get_queryset().filter(week_name=week_name)
-
+    prophecies_this_week = None
+    feedbacks = None
+    week_name = ""
+    if request.method == "POST":
+        weekly_selection_form = PracticumNamesForm(data=request.POST)
+        if weekly_selection_form.is_valid():
+            week_name = weekly_selection_form.cleaned_data['name'].week_name
+            print(f"{week_name=}")
+            prophecies_this_week = Prophecy.objects.get_queryset().filter(week_name=week_name)
+            feedbacks = ProphecyFeedback.objects.get_queryset().filter(week_name=week_name)
+    else:
+        weekly_selection_form = PracticumNamesForm()
     return render(request, 'practicum/statuscheck.html', {'prophecies_this_week': prophecies_this_week,
-                                                          "week_name": week_name, 'feedbacks': feedbacks})
+                                                          "week_name": week_name, 'feedbacks': feedbacks,
+                                                          "selection_form": weekly_selection_form})
 

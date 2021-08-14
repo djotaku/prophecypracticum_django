@@ -62,3 +62,9 @@ class WeeklyLink(models.Model):
     supplicant = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="supplicant_week")
     week_name = models.CharField(max_length=8, default="00000000")
     objects = models.Manager()
+
+
+class PracticumNames(models.Model):
+    """Holds all the practicum week_names"""
+    week_name = models.CharField(max_length=8, default="00000000")
+    objects = models.Manager()
