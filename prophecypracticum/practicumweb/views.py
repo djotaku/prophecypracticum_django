@@ -183,7 +183,7 @@ def status_check(request):
     sunday = find_sunday()
     week_name = sunday.strftime('%Y%m%d')
     prophecies_this_week = Prophecy.objects.get_queryset().filter(week_name=week_name)
-    feedbacks = ProphecyFeedback.objects.get_queryset(week_name=week_name)
+    feedbacks = ProphecyFeedback.objects.get_queryset().filter(week_name=week_name)
 
     return render(request, 'practicum/statuscheck.html', {'prophecies_this_week': prophecies_this_week,
                                                           "week_name": week_name, 'feedbacks': feedbacks})

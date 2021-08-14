@@ -2,16 +2,21 @@
 
 {% block content %}
     <h1>Status Check</h1>
-    <h2>Prophecies Completed for practicum {{ week_name }}</h2>
-<ul>
-    {%  for prophecy in prophecies_this_week %}
-        <li>Prophecy completed by {{ prophecy.prophet }} for {{ prophecy.supplicant }}</li>
-    {% endfor %}
-</ul>
-    <h2>Feedbacks Completed for practicum {{ week_name }}</h2>
+    <h2>Prophecy info for Practicum {{ week_name }}</h2>
+    {% if prophecies_this_week %}
     <ul>
-    {%  for feedback in feedbacks %}
-        <li>Feedback completed for {{ feedback.prophecy }}</li>
+    {%  for prophecy in prophecies_this_week %}
+        <li>Prophecy completed by {{ prophecy.prophet }} for {{ prophecy.supplicant }}.
+        {%  for feedback in feedbacks %}
+            {% if prophecy.id == feedback.prophecy.id %}
+        Feedback Completed.
+                {% else %}
+                Feedback Incomplete.
+        {% endif %}
+            {% endfor %}</li>
     {% endfor %}
+        {%  else %}
+        No one has completed any prophecies for this week.
+    {% endif %}
     </ul>
 {% endblock %}
