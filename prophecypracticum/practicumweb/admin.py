@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Prophecy, ProphecyFeedback, WeeklyLink
+from .models import Prophecy, ProphecyFeedback, WeeklyLink, PracticumNames
 
 
 # Register your models here.
