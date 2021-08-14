@@ -11,6 +11,7 @@
         {%  for feedback in feedbacks %}
             {% if prophecy.id == feedback.prophecy.id %}
         Feedback Completed.
+		{% break %}
                 {% else %}
                 Feedback Incomplete.
         {% endif %}
