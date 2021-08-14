@@ -11,4 +11,5 @@ urlpatterns = [
          name='detailed_prophecy'),
     path('newfeedback/<int:prophecy_id>/', views.new_feedback, name="newfeedback"),
     path('randomize/', views.randomizer, name="randomize"),
+    path('statuscheck/', views.status_check, name="status check"),
 ]

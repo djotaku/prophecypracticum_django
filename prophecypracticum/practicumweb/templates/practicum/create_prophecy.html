@@ -1,3 +1,6 @@
+{% extends 'practicum/base.html' %}
+
+{% block content %}
 {% if new_prophecy %}
 <h2>Your Prophecy has been recorded</h2>
 <a href="{% url 'practicumweb:home' %}">Go back to your main page</a>
@@ -14,3 +17,4 @@ Pressing Submit with a status of Published will send an email to your supplicant
 </form>
 <a href="{% url 'practicumweb:home' %}">Leave without recording a prophecy</a>
 {% endif %}
+{% endblock %}

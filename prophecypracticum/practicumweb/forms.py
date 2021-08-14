@@ -1,5 +1,5 @@
 from django import forms
-from .models import Prophecy, ProphecyFeedback, User
+from .models import Prophecy, ProphecyFeedback, User, PracticumNames
 
 
 class ProphecyForm(forms.ModelForm):
@@ -22,3 +22,12 @@ class RandomizedModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 class RandomizeForm(forms.Form):
     participants = RandomizedModelMultipleChoiceField(queryset=User.objects.all(),
                                                       widget=forms.CheckboxSelectMultiple)
+
+
+class WeekNameChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return f"{obj.week_name}"
+
+
+class PracticumNamesForm(forms.Form):
+    name = WeekNameChoiceField(queryset=PracticumNames.objects.all(), widget=forms.Select)
