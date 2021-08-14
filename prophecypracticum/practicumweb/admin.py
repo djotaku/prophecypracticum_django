@@ -34,3 +34,8 @@ class WeeklyLinkAdmin(admin.ModelAdmin):
 
     def view_user_last_name(self, obj):
         return obj.prophet.last_name
+
+
+@admin.register(PracticumNames)
+class PracticumNamesAdmin(admin.ModelAdmin):
+    list_display = ('week_name',)
