@@ -6,7 +6,7 @@ from .models import Prophecy, ProphecyFeedback, WeeklyLink
 @admin.register(Prophecy)
 class ProphecyAdmin(admin.ModelAdmin):
     list_display = ('prophet', 'supplicant', 'publish', 'status')
-    list_filter = ('prophet', 'supplicant', 'publish', 'status')
+    list_filter = ( 'week_name', 'prophet', 'supplicant', 'publish', 'status')
     raw_id_fields = ('prophet', 'supplicant',)
     date_hierarchy = 'publish'
     ordering = ('status', 'publish')
@@ -15,7 +15,7 @@ class ProphecyAdmin(admin.ModelAdmin):
 @admin.register(ProphecyFeedback)
 class ProphecyFeedbackAdmin(admin.ModelAdmin):
     list_display = ('prophecy', 'publish', 'status')
-    list_filter = ('prophecy', 'publish', 'status')
+    list_filter = ('week_name', 'prophecy', 'publish', 'status')
     raw_id_fields = ('prophecy',)
     ordering = ('status', 'publish')
 
@@ -25,7 +25,7 @@ class WeeklyLinkAdmin(admin.ModelAdmin):
     date_hierarchy = 'sunday_date'
     list_display = ('prophet', 'view_user_first_name', 'view_user_last_name', 'supplicant', 'sunday_date',
                     'week_name')
-    list_filter = ('prophet', 'supplicant', 'sunday_date')
+    list_filter = ('week_name', 'prophet', 'supplicant', 'sunday_date')
     raw_id_fields = ('prophet', 'supplicant',)
     ordering = ('sunday_date',)
 
