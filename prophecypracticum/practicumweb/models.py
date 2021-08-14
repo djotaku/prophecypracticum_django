@@ -19,7 +19,7 @@ class Prophecy(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     week_name = models.CharField(max_length=8, default="00000000")
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='published')
     objects = models.Manager()
     published = PublishedManager()
 
@@ -43,7 +43,7 @@ class ProphecyFeedback(models.Model):
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='published')
     week_name = models.CharField(max_length=8, default="00000000")
     objects = models.Manager()
     published = PublishedManager()

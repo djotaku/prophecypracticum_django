@@ -5,13 +5,13 @@ from .models import Prophecy, ProphecyFeedback, User, PracticumNames
 class ProphecyForm(forms.ModelForm):
     class Meta:
         model = Prophecy
-        fields = ('prophecy_text', 'status',)
+        fields = ('prophecy_text', )
 
 
 class ProphecyRatingForm(forms.ModelForm):
     class Meta:
         model = ProphecyFeedback
-        fields = ('feedback_rating', 'feedback_text', 'status')
+        fields = ('feedback_rating', 'feedback_text', )
 
 
 class RandomizedModelMultipleChoiceField(forms.ModelMultipleChoiceField):
