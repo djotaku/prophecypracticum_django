@@ -1,0 +1,17 @@
+{% extends 'practicum/base.html' %}
+
+{% block content %}
+    <h1>Status Check</h1>
+    <h2>Prophecies Completed for practicum {{ week_name }}</h2>
+<ul>
+    {%  for prophecy in prophecies_this_week %}
+        <li>Prophecy completed by {{ prophecy.prophet }} for {{ prophecy.supplicant }}</li>
+    {% endfor %}
+</ul>
+    <h2>Feedbacks Completed for practicum {{ week_name }}</h2>
+    <ul>
+    {%  for feedback in feedbacks %}
+        <li>Feedback completed for {{ feedback.prophecy }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

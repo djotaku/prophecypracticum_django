@@ -18,6 +18,7 @@ class Prophecy(models.Model):
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    week_name = models.CharField(max_length=8, default="00000000")
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     objects = models.Manager()
     published = PublishedManager()
@@ -43,6 +44,7 @@ class ProphecyFeedback(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    week_name = models.CharField(max_length=8, default="00000000")
     objects = models.Manager()
     published = PublishedManager()
 
@@ -58,4 +60,5 @@ class WeeklyLink(models.Model):
     sunday_date = models.DateTimeField()
     prophet = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="prophecy_week")
     supplicant = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="supplicant_week")
+    week_name = models.CharField(max_length=8, default="00000000")
     objects = models.Manager()

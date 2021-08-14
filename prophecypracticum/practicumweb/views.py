@@ -30,6 +30,7 @@ def new_prophecy(request):
                                                               sunday_date__month=sunday.month,
                                                               sunday_date__day=sunday.day)
     supplicant = this_week_link[0].supplicant
+    week_name = this_week_link[0].week_name
 
     if request.method == "POST":
         # A prophecy was posted
@@ -39,6 +40,7 @@ def new_prophecy(request):
             prophecy = prophecy_form.save(commit=False)
             prophecy.prophet = prophet
             prophecy.supplicant = supplicant
+            prophecy.week_name = week_name
             prophecy.save()
             if prophecy.status == "published":
                 send_mail('You have a prophecy to read',
@@ -115,6 +117,11 @@ def new_feedback(request, prophecy_id):
     feedback = None
     feedback_status = None
     prophecy = Prophecy.objects.get_queryset().filter(id=prophecy_id)
+    sunday = find_sunday()
+    this_week_link = WeeklyLink.objects.get_queryset().filter(sunday_date__year=sunday.year,
+                                                              sunday_date__month=sunday.month,
+                                                              sunday_date__day=sunday.day)
+    week_name = this_week_link[0].week_name
 
     if request.method == "POST":
         # A feedback was posted
@@ -153,14 +160,31 @@ def randomizer(request):
             randomized_supplicant_pool = random.sample(list(users), len(list(users)))
             combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
             sunday = find_sunday()
+            week_name = sunday.strftime('%Y%m%d')
             for pair in combined_list:
                 if pair[0] is None:
-                    database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[1], supplicant=pair[1])
+                    database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[1], supplicant=pair[1],
+                                                week_name=week_name)
                 elif pair[1] is None:
-                    database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[0])
+                    database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[0],
+                                                week_name=week_name)
                 else:
-                    database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1])
+                    database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1],
+                                                week_name=week_name)
                 database_entry.save()
     else:
         user_selection_form = RandomizeForm()
     return render(request, 'practicum/randomize.html', {'user_selection_form': user_selection_form})
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def status_check(request):
+    sunday = find_sunday()
+    week_name = sunday.strftime('%Y%m%d')
+    prophecies_this_week = Prophecy.objects.get_queryset().filter(week_name=week_name)
+    feedbacks = ProphecyFeedback.objects.get_queryset(week_name=week_name)
+
+    return render(request, 'practicum/statuscheck.html', {'prophecies_this_week': prophecies_this_week,
+                                                          "week_name": week_name, 'feedbacks': feedbacks})
+
