@@ -117,11 +117,7 @@ def new_feedback(request, prophecy_id):
     feedback = None
     feedback_status = None
     prophecy = Prophecy.objects.get_queryset().filter(id=prophecy_id)
-    sunday = find_sunday()
-    this_week_link = WeeklyLink.objects.get_queryset().filter(sunday_date__year=sunday.year,
-                                                              sunday_date__month=sunday.month,
-                                                              sunday_date__day=sunday.day)
-    week_name = this_week_link[0].week_name
+    week_name = prophecy[0].week_name
 
     if request.method == "POST":
         # A feedback was posted
@@ -130,6 +126,7 @@ def new_feedback(request, prophecy_id):
             # create it, but don't save to database yet
             feedback = feedback_form.save(commit=False)
             feedback.prophecy = prophecy[0]
+            feedback.week_name = week_name
             feedback.save()
             if feedback.status == "published":
                 prophet = prophecy[0].prophet
