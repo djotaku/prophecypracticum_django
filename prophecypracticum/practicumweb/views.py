@@ -181,6 +181,7 @@ def randomizer(request):
 def status_check(request):
     prophecies_this_week = None
     feedbacks = None
+    feedback_list = None
     week_name = ""
     if request.method == "POST":
         weekly_selection_form = PracticumNamesForm(data=request.POST)
@@ -189,9 +190,10 @@ def status_check(request):
             print(f"{week_name=}")
             prophecies_this_week = Prophecy.objects.get_queryset().filter(week_name=week_name)
             feedbacks = ProphecyFeedback.objects.get_queryset().filter(week_name=week_name)
+            feedback_list = [feedback.prophecy for feedback in feedbacks]
     else:
         weekly_selection_form = PracticumNamesForm()
     return render(request, 'practicum/statuscheck.html', {'prophecies_this_week': prophecies_this_week,
-                                                          "week_name": week_name, 'feedbacks': feedbacks,
+                                                          "week_name": week_name, 'feedbacks': feedback_list,
                                                           "selection_form": weekly_selection_form})
 
