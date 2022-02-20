@@ -8,6 +8,10 @@ Hi, {{user.first_name}} {{user.last_name}}!
 
 <h1>As Prophet:</h1>
 <p><a href="{% url 'practicumweb:newprophecy' %}">Create Prophecy</a></p>
+    <form action ='{% url 'practicumweb:newprophecy'%}' method="get">
+    {{ selection_form.as_p}}
+    {% csrf_token %}
+    <p><input type="submit" value="Create Prophecy for Selected Week"></p>
 
 <p>Prophecies in Draft Status</p>
 <ul>

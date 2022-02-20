@@ -22,7 +22,7 @@ def find_sunday():
 
 
 @login_required
-def new_prophecy(request):
+def new_prophecy(request, sunday_year, sunday_month, sunday_day):
     random_person = random.randint(0, 10)
     prophecy = None
     prophet = request.user
@@ -58,6 +58,7 @@ def new_prophecy(request):
 @login_required()
 def home(request):
     user = request.user
+    weekly_selection_form = PracticumNamesForm()
     published_prophecies = Prophecy.objects.get_queryset().filter(status='published', prophet=user)
     draft_prophecies = Prophecy.objects.get_queryset().filter(status='draft', prophet=user)
     prophecies_for_me = Prophecy.objects.get_queryset().filter(status='published', supplicant=user)
@@ -67,7 +68,8 @@ def home(request):
                   {'published_prophecies': published_prophecies,
                    'draft_prophecies': draft_prophecies,
                    'feedback_list': feedback_list,
-                   'prophecies_for_me': prophecies_for_me})
+                   'prophecies_for_me': prophecies_for_me,
+                   'selection_form': weekly_selection_form})
 
 
 @login_required()
