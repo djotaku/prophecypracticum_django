@@ -97,9 +97,7 @@ def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
                           fail_silently=False)
     else:
         prophecy_form = ProphecyForm(instance=prophecy)
-        what_am_i = "prophet"
-        if request.user == prophecy.supplicant:
-            what_am_i = "supplicant"
+        what_am_i = "supplicant" if request.user == prophecy.supplicant else "prophet"
         feedback_query = ProphecyFeedback.objects.get_queryset().filter(prophecy=prophecy.id)
         feedback = 0
         feedback_status = 0
@@ -136,12 +134,12 @@ def new_feedback(request, prophecy_id):
                           'prophecypracticum@ericmesa.com',
                           [prophet.email],
                           fail_silently=False)
+    elif feedback_query := ProphecyFeedback.objects.get_queryset().filter(
+        prophecy=prophecy[0].id
+    ):
+        feedback_form = ProphecyRatingForm(instance=feedback_query[0])
     else:
-        feedback_query = ProphecyFeedback.objects.get_queryset().filter(prophecy=prophecy[0].id)
-        if feedback_query:
-            feedback_form = ProphecyRatingForm(instance=feedback_query[0])
-        else:
-            feedback_form = ProphecyRatingForm()
+        feedback_form = ProphecyRatingForm()
     return render(request, 'practicum/create_feedback.html',
                   {'new_feedback': feedback, 'feedback_form': feedback_form,
                    "feedback_status": feedback_status, "prophecy": prophecy[0]})
