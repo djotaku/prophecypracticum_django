@@ -26,10 +26,10 @@ class ProphecyFeedbackAdmin(admin.ModelAdmin):
     ordering = ('status', 'publish')
 
     def prophet_name(self, obj):
-        return f"{obj.prophet.first_name} {obj.prophet.last_name}"
+        return f"{obj.prophecy.prophet.first_name} {obj.prophecy.prophet.last_name}"
 
     def supplicant_name(self, obj):
-        return f"{obj.supplicant.first_name} {obj.supplicant.last_name}"
+        return f"{obj.prophecy.supplicant.first_name} {obj.prophecy.supplicant.last_name}"
 
 
 @admin.register(WeeklyLink)
