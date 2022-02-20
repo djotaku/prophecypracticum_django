@@ -1,12 +1,13 @@
-from django import forms
-from django.shortcuts import render, get_object_or_404
-from django.core.mail import send_mail
-from .models import Prophecy, ProphecyFeedback, WeeklyLink, PracticumNames, User
-from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import ProphecyForm, ProphecyRatingForm, RandomizeForm, PracticumNamesForm
+import random
 from datetime import datetime, timedelta
 from itertools import zip_longest
-import random
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.mail import send_mail
+from django.shortcuts import render, get_object_or_404
+
+from .forms import ProphecyForm, ProphecyRatingForm, RandomizeForm, PracticumNamesForm
+from .models import Prophecy, ProphecyFeedback, WeeklyLink, PracticumNames
 
 
 def find_sunday():
