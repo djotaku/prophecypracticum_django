@@ -5,7 +5,7 @@ from .models import Prophecy, ProphecyFeedback, WeeklyLink, PracticumNames
 # Register your models here.
 @admin.register(Prophecy)
 class ProphecyAdmin(admin.ModelAdmin):
-    list_display = ('prophet', 'prophet_name', "supplicant_name", 'supplicant', 'publish', 'status')
+    list_display = ('prophet', 'prophet_name', 'supplicant', "supplicant_name", 'publish', 'status')
     list_filter = ('week_name', 'prophet', 'supplicant', 'publish', 'status')
     raw_id_fields = ('prophet', 'supplicant',)
     date_hierarchy = 'publish'

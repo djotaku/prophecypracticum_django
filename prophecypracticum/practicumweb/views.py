@@ -26,22 +26,30 @@ def new_prophecy(request):
     random_person = random.randint(0, 10)
     prophecy = None
     prophet = request.user
-    sunday = find_sunday()
-    this_week_link = WeeklyLink.objects.get_queryset().filter(prophet=prophet, sunday_date__year=sunday.year,
-                                                              sunday_date__month=sunday.month,
-                                                              sunday_date__day=sunday.day)
-    supplicant = this_week_link[0].supplicant
-    week_name = this_week_link[0].week_name
+    #sunday = find_sunday()
+    #this_week_link = WeeklyLink.objects.get_queryset().filter(prophet=prophet, sunday_date__year=sunday.year,
+    #                                                          sunday_date__month=sunday.month,
+    #                                                          sunday_date__day=sunday.day)
+    #supplicant = this_week_link[0].supplicant
+    #week_name = this_week_link[0].week_name
+    supplicant = "fake"
+    week_name = "fake"
 
     if request.method == "POST":
         # A prophecy was posted
         prophecy_form = ProphecyForm(data=request.POST)
-        if prophecy_form.is_valid():
+        weekly_selection_form = PracticumNamesForm(data=request.POST)
+        if prophecy_form.is_valid() and weekly_selection_form.is_valid():
             # create it, but don't save to database yet
             prophecy = prophecy_form.save(commit=False)
             prophecy.prophet = prophet
+            selected_week = weekly_selection_form.cleaned_data['practicum_week'].week_name
+            print(f"{selected_week=}")
+            week_query = WeeklyLink.objects.get_queryset().filter(prophet=prophet, week_name=selected_week)
+            print(week_query[0])
+            supplicant = week_query[0].supplicant
             prophecy.supplicant = supplicant
-            prophecy.week_name = week_name
+            prophecy.week_name = selected_week
             prophecy.save()
             if prophecy.status == "published":
                 send_mail('You have a prophecy to read',
@@ -51,8 +59,10 @@ def new_prophecy(request):
                           fail_silently=False)
     else:
         prophecy_form = ProphecyForm()
+        weekly_selection_form = PracticumNamesForm()
     return render(request, 'practicum/create_prophecy.html',
-                  {'new_prophecy': prophecy, 'prophecy_form': prophecy_form, "random": random_person})
+                  {'new_prophecy': prophecy, 'prophecy_form': prophecy_form, "random": random_person,
+                   'weekly_form': weekly_selection_form})
 
 
 @login_required()
@@ -67,7 +77,7 @@ def home(request):
                   {'published_prophecies': published_prophecies,
                    'draft_prophecies': draft_prophecies,
                    'feedback_list': feedback_list,
-                   'prophecies_for_me': prophecies_for_me})
+                   'prophecies_for_me': prophecies_for_me,})
 
 
 @login_required()
@@ -97,9 +107,7 @@ def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
                           fail_silently=False)
     else:
         prophecy_form = ProphecyForm(instance=prophecy)
-        what_am_i = "prophet"
-        if request.user == prophecy.supplicant:
-            what_am_i = "supplicant"
+        what_am_i = "supplicant" if request.user == prophecy.supplicant else "prophet"
         feedback_query = ProphecyFeedback.objects.get_queryset().filter(prophecy=prophecy.id)
         feedback = 0
         feedback_status = 0
@@ -136,12 +144,12 @@ def new_feedback(request, prophecy_id):
                           'prophecypracticum@ericmesa.com',
                           [prophet.email],
                           fail_silently=False)
+    elif feedback_query := ProphecyFeedback.objects.get_queryset().filter(
+        prophecy=prophecy[0].id
+    ):
+        feedback_form = ProphecyRatingForm(instance=feedback_query[0])
     else:
-        feedback_query = ProphecyFeedback.objects.get_queryset().filter(prophecy=prophecy[0].id)
-        if feedback_query:
-            feedback_form = ProphecyRatingForm(instance=feedback_query[0])
-        else:
-            feedback_form = ProphecyRatingForm()
+        feedback_form = ProphecyRatingForm()
     return render(request, 'practicum/create_feedback.html',
                   {'new_feedback': feedback, 'feedback_form': feedback_form,
                    "feedback_status": feedback_status, "prophecy": prophecy[0]})
@@ -187,7 +195,7 @@ def status_check(request):
     if request.method == "POST":
         weekly_selection_form = PracticumNamesForm(data=request.POST)
         if weekly_selection_form.is_valid():
-            week_name = weekly_selection_form.cleaned_data['name'].week_name
+            week_name = weekly_selection_form.cleaned_data['practicum_week'].week_name
             print(f"{week_name=}")
             prophecies_this_week = Prophecy.objects.get_queryset().filter(week_name=week_name)
             feedbacks = ProphecyFeedback.objects.get_queryset().filter(week_name=week_name)
