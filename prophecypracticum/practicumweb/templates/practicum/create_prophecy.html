@@ -12,6 +12,7 @@ Pressing Submit will email your supplicant.
 <p>You are praying for random ID: {{random}}. </p>
 <form action ='.' method="post">
     {{ prophecy_form.as_p}}
+    {{ weekly_form.as_p }}
     {% csrf_token %}
     <p><input type="submit" value="Submit"></p>
 </form>
