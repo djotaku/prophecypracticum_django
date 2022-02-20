@@ -22,7 +22,8 @@ def find_sunday():
 
 
 @login_required
-def new_prophecy(request, sunday_year, sunday_month, sunday_day):
+def new_prophecy(request, this_sunday):
+    print(this_sunday)
     random_person = random.randint(0, 10)
     prophecy = None
     prophet = request.user
