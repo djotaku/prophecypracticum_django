@@ -26,8 +26,3 @@
 </form>
 {% endif %}
 {% endblock %}
-<form action ='.' method="post">
-    {{ selection_form.as_p}}
-    {% csrf_token %}
-    <p><input type="submit" value="Submit"></p>
-</form>
