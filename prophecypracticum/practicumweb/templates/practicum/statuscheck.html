@@ -1,28 +1,28 @@
 {% extends 'practicum/base.html' %}
 
 {% block content %}
-    <h1>Status Check</h1>
+    <h1 class="title is-size-1">Status Check</h1>
     {% if week_name != "" %}
-    <h2>Prophecy info for Practicum {{ week_name }}</h2>
-    {% if prophecies_this_week %}
-    <ul>
-    {%  for prophecy in prophecies_this_week %}
-        <li>Prophecy completed by {{ prophecy.prophet }} for {{ prophecy.supplicant }}.
-        {% if prophecy in feedbacks %}
-        Feedback Completed.
+        <h2 class="title is-size-2">Prophecy info for Practicum {{ week_name }}</h2>
+        {% if prophecies_this_week %}
+            <ul>
+                {% for prophecy in prophecies_this_week %}
+                    <li>Prophecy completed by {{ prophecy.prophet }} for {{ prophecy.supplicant }}.
+                    {% if prophecy in feedbacks %}
+                        Feedback Completed.
+                    {% else %}
+                        Feedback Incomplete.
+                    {% endif %}
+                {% endfor %}
                 {% else %}
-                Feedback Incomplete.
+                No one has completed any prophecies for this week.
+            </ul>
         {% endif %}
-    {% endfor %}
-        {%  else %}
-        No one has completed any prophecies for this week.
-    </ul>
+    {% else %}
+        <form action='.' method="post">
+            {{ selection_form.as_p }}
+            {% csrf_token %}
+            <p><input type="submit" value="Submit"></p>
+        </form>
     {% endif %}
-        {% else %}
-        <form action ='.' method="post">
-    {{ selection_form.as_p}}
-    {% csrf_token %}
-    <p><input type="submit" value="Submit"></p>
-</form>
-{% endif %}
 {% endblock %}
