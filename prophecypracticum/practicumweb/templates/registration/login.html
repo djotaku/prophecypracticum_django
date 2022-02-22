@@ -1,16 +1,24 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 {% block content %}
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form.visible_fields %}
-            <div class="form-group">
-            {{ field.label_tag }}
-            {% render_field field class="form-control" %}
-            </div>
-        {% endfor %}
-        <button type="submit" class="button is-rounded is-primary">Log In</button>
-    </form>
-
+    <section class="section">
+        <div class="container is-fluid">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form.visible_fields %}
+                    <div class="field">
+                        <label class="label">{{ field.label_tag }}</label>
+                        <div class="control">
+                        {% render_field field class="input is-success" %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="field is-grouped">
+                    <div class="control">
+                    <button type="submit" class="button is-rounded is-primary">Log In</button>
+                </div>
+        </div>
+        </form>
+        </div>
+    </section>
 {% endblock %}
