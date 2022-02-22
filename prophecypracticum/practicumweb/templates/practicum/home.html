@@ -4,9 +4,10 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-
-        <p>Hi, {{ user.first_name }} {{ user.last_name }}!</p>
-        <section>
+        <section class="section">
+            <span><p>Hi, {{ user.first_name }} {{ user.last_name }}!</p></span>
+        </section>
+        <section class="section">
             <h1 class="title">As Prophet:</h1>
             <div class="box">
                 <p><a href="{% url 'practicumweb:newprophecy' %}">Create Prophecy</a></p>
@@ -49,7 +50,7 @@
                 </table>
             </div>
         </section>
-        <section>
+        <section class="section">
             <h1 class="title">As Supplicant:</h1>
             <div class="box">
                 <h2 class="title">Prophecies For Me</h2>
