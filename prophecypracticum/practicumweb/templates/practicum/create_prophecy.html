@@ -16,7 +16,7 @@
             {{ prophecy_form.as_p }}
             {{ weekly_form.as_p }}
             {% csrf_token %}
-            <p><input type="submit" value="Submit"></p>
+            <p><input type="submit" class="button is-rounded is-primary" value="Submit"></p>
         </form>
         <a href="{% url 'practicumweb:home' %}">Leave without recording a prophecy</a>
     {% endif %}

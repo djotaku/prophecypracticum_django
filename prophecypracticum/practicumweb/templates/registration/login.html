@@ -1,10 +1,16 @@
 {% extends 'base.html' %}
-{%  block content %}
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Log In</button>
-</form>
+{% load widget_tweaks %}
+{% block content %}
+    <h2>Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form.visible_fields %}
+            <div class="form-group">
+            {{ field.label_tag }}
+            {% render_field field class="form-control" %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="button is-rounded is-primary">Log In</button>
+    </form>
 
 {% endblock %}
