@@ -69,7 +69,7 @@ def home(request):
                   {'published_prophecies': published_prophecies,
                    'draft_prophecies': draft_prophecies,
                    'feedback_list': feedback_list,
-                   'prophecies_for_me': prophecies_for_me,})
+                   'prophecies_for_me': prophecies_for_me, })
 
 
 @login_required()

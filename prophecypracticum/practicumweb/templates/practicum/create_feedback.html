@@ -1,23 +1,55 @@
 {% extends 'practicum/base.html' %}
-
+{% load widget_tweaks %}
 {% block content %}
-{% if new_feedback %}
-<h2>Your Feedback has been recorded</h2>
-<a href="{% url 'practicumweb:home' %}">Go back to your main page</a>
-{% else %}
-<h2>Add a feedback for your Prophecy</h2>
+    {% if new_feedback %}
+        <div class="notification is-success" xmlns="http://www.w3.org/1999/html">
+            <h2 class="title is-size-2">Your Feedback has been recorded</h2>
+            <a href="{% url 'practicumweb:home' %}">Go back to your main page</a>
+        </div>
+    {% else %}
+        <section class="section">
+        <div class="container is-fluid">
+        <h2 class="title is-size-2">Add a feedback for your Prophecy</h2>
 
-<p>Hitting submit will email the Prophet to let them know they have a prophecy to read.</p>
+        <div class="columns">
+            <div class="column">
+                <p>Hitting submit will email the Prophet to let them know they have a prophecy to read.</p>
 
-<p>The Prophecy reads:</p>
-<p>{{ prophecy.prophecy_text }}</p>
-    Please limit your rating to between 1 and 5.
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title">The Prophecy</p>
+                    </header>
 
-    <form action ='.' method="post">
-    {{ feedback_form.as_p}}
-    {% csrf_token %}
-    <p><input type="submit" value="Submit"></p>
-</form>
-<a href="{% url 'practicumweb:home' %}">Leave without recording a feedback</a>
-{% endif %}
+                    {{ prophecy.prophecy_text }}
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <header class="class-header">
+                        <p class="card-header-title">Feedback</p>
+                    </header>
+
+                    Please limit your rating to between 1 and 5.
+
+                    <form action='.' method="post">
+                        {% for field in feedback_form.visible_fields %}
+                            <div class="field">
+                                <label class="label">{{ field.label_tag }}</label>
+                                <div class="control">
+                                    {% render_field field class="input" %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% csrf_token %}
+                        <footer class="card-footer">
+                            <p><input type="submit" class="button is-rounded is-primary" value="Submit"></p>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <a href="{% url 'practicumweb:home' %}">Leave without recording a feedback</a>
+    {% endif %}
+</div>
+</section>
 {% endblock %}
