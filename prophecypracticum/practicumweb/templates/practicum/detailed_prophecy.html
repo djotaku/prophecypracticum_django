@@ -1,27 +1,33 @@
 {% extends 'practicum/base.html' %}
 
 {% block content %}
-<h1>Here is your prophecy! </h1>
-{% if status == "published" %}
-<h2>Text:</h2>
-<p>{{ prophecy.prophecy_text }} </p>
-{% else %}
-<form action ='.' method="post">
-    {{ prophecy_form.as_p}}
-    {% csrf_token %}
-    <p><input type="submit" value="Submit"></p></form>
-{% endif %}
+    <section class="section">
+        <h1 class="title is-size-1">Here is your prophecy! </h1>
+        {% if status == "published" %}
+            <div class="box box-shadow">
+                <h2 class="title is-size-3">Text:</h2>
+                <p>{{ prophecy.prophecy_text }} </p>
+            </div>
+        {% else %}
+            <form action='.' method="post">
+                {{ prophecy_form.as_p }}
+                {% csrf_token %}
+                <p><input type="submit" value="Submit"></p></form>
+        {% endif %}
+    </section>
+    <section class="section">
+        <div class="box box-shadow">
+            {% if feedback and feedback_status == "published" %}
+                <h2 class="title is-size-3">Feedback:</h2>
+                <p>Rating: {{ feedback.feedback_rating }}</p>
+                <p>Text: {{ feedback.feedback_text }}</p>
+            {% endif %}
+        </div>
+    </section>
+    {% if what_am_i == "supplicant" and feedback == 0 or feedback_status == 'draft' %}
+        <p><a href="{% url 'practicumweb:newfeedback' prophecy_id=prophecy.id %}">Record your feedback?</a></p>
+    {% endif %}
 
-{% if feedback and feedback_status == "published" %}
-<h2>Feedback:</h2>
-<p>Rating: {{ feedback.feedback_rating }}</p>
-<p>Text: {{ feedback.feedback_text }}</p>
-{% endif %}
-
-{% if what_am_i == "supplicant" and feedback == 0 or feedback_status == 'draft' %}
-<p><a href="{% url 'practicumweb:newfeedback' prophecy_id=prophecy.id %}">Record your feedback?</a></p>
-{%endif%}
-
-<a href="{% url 'practicumweb:home' %}">Back to your home screen.</a>
+    <a href="{% url 'practicumweb:home' %}">Back to your home screen.</a>
 {% endblock %}
 

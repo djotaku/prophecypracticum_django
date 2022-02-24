@@ -1,21 +1,41 @@
 {% extends 'practicum/base.html' %}
-
+{% load widget_tweaks %}
 {% block content %}
-{% if new_prophecy %}
-<h2>Your Prophecy has been recorded</h2>
-<a href="{% url 'practicumweb:home' %}">Go back to your main page</a>
-{% else %}
-<h2>Add a new Prophecy</h2>
+    {% if new_prophecy %}
+        <div class="notification is-success">
+            <h2 class="title">Your Prophecy has been recorded</h2>
+            <a href="{% url 'practicumweb:home' %}">Go back to your main page</a>
+        </div>
+    {% else %}
+        <h2 class="title">Add a new Prophecy</h2>
 
-Pressing Submit will email your supplicant.
+        Pressing Submit will email your supplicant.
 
-<p>You are praying for random ID: {{random}}. </p>
-<form action ='.' method="post">
-    {{ prophecy_form.as_p}}
-    {{ weekly_form.as_p }}
-    {% csrf_token %}
-    <p><input type="submit" value="Submit"></p>
-</form>
-<a href="{% url 'practicumweb:home' %}">Leave without recording a prophecy</a>
-{% endif %}
+        <p>You are praying for random ID: {{ random }}. </p>
+        <section class="section">
+            <div class="container is-fluid">
+                <form action='.' method="post">
+                    {% for field in prophecy_form.visible_fields %}
+                        <div class="field">
+                            <label class="label">{{ field.label_tag }}</label>
+                            <div class="control">
+                                {% render_field field class="input" %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% for field in weekly_form.visible_fields %}
+                        <div class="field">
+                            <label class="label">{{ field.label_tag }}</label>
+                            <div class="control">
+                                {% render_field field class="input" %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% csrf_token %}
+                    <p><input type="submit" class="button is-rounded is-primary" value="Submit"></p>
+                </form>
+            </div>
+        </section>
+        <a href="{% url 'practicumweb:home' %}">Leave without recording a prophecy</a>
+    {% endif %}
 {% endblock %}

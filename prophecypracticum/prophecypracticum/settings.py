@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'practicumweb.apps.PracticumwebConfig'
+    'practicumweb.apps.PracticumwebConfig',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [

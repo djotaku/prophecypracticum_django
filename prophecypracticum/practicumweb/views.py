@@ -26,14 +26,6 @@ def new_prophecy(request):
     random_person = random.randint(0, 10)
     prophecy = None
     prophet = request.user
-    #sunday = find_sunday()
-    #this_week_link = WeeklyLink.objects.get_queryset().filter(prophet=prophet, sunday_date__year=sunday.year,
-    #                                                          sunday_date__month=sunday.month,
-    #                                                          sunday_date__day=sunday.day)
-    #supplicant = this_week_link[0].supplicant
-    #week_name = this_week_link[0].week_name
-    supplicant = "fake"
-    week_name = "fake"
 
     if request.method == "POST":
         # A prophecy was posted
@@ -77,7 +69,7 @@ def home(request):
                   {'published_prophecies': published_prophecies,
                    'draft_prophecies': draft_prophecies,
                    'feedback_list': feedback_list,
-                   'prophecies_for_me': prophecies_for_me,})
+                   'prophecies_for_me': prophecies_for_me, })
 
 
 @login_required()
@@ -191,18 +183,25 @@ def status_check(request):
     prophecies_this_week = None
     feedbacks = None
     feedback_list = None
+    linked_users = None
+    incomplete_prophets = None
     week_name = ""
     if request.method == "POST":
         weekly_selection_form = PracticumNamesForm(data=request.POST)
         if weekly_selection_form.is_valid():
             week_name = weekly_selection_form.cleaned_data['practicum_week'].week_name
-            print(f"{week_name=}")
             prophecies_this_week = Prophecy.objects.get_queryset().filter(week_name=week_name)
             feedbacks = ProphecyFeedback.objects.get_queryset().filter(week_name=week_name)
+            linked_users = WeeklyLink.objects.get_queryset().filter(week_name=week_name)
+            complete_practicum_prophets = {prophecy.prophet for prophecy in prophecies_this_week}
+            this_week_practicum_prophets = {link.prophet for link in linked_users}
+            incomplete_prophets = this_week_practicum_prophets - complete_practicum_prophets
             feedback_list = [feedback.prophecy for feedback in feedbacks]
     else:
         weekly_selection_form = PracticumNamesForm()
     return render(request, 'practicum/statuscheck.html', {'prophecies_this_week': prophecies_this_week,
                                                           "week_name": week_name, 'feedbacks': feedback_list,
-                                                          "selection_form": weekly_selection_form})
+                                                          "selection_form": weekly_selection_form,
+                                                          'linked_users': linked_users,
+                                                          'incomplete_prophets': incomplete_prophets})
 

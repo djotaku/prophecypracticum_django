@@ -12,4 +12,5 @@ urlpatterns = [
     path('newfeedback/<int:prophecy_id>/', views.new_feedback, name="newfeedback"),
     path('randomize/', views.randomizer, name="randomize"),
     path('statuscheck/', views.status_check, name="status check"),
+    path('intructions/', TemplateView.as_view(template_name='instructions.html'), name="instructions"),
 ]

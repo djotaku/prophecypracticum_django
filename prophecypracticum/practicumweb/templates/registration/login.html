@@ -1,6 +1,24 @@
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Log In</button>
-</form>
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <section class="section">
+        <div class="container is-fluid">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form.visible_fields %}
+                    <div class="field">
+                        <label class="label">{{ field.label_tag }}</label>
+                        <div class="control">
+                        {% render_field field class="input is-success" %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="field is-grouped">
+                    <div class="control">
+                    <button type="submit" class="button is-rounded is-primary">Log In</button>
+                </div>
+        </div>
+        </form>
+        </div>
+    </section>
+{% endblock %}

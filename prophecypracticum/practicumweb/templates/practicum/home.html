@@ -1,43 +1,96 @@
 {% extends 'practicum/base.html' %}
 
-{% block title %} My Main Screen {% endblock %}
+{% block title %} Prophecy Central {% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-Hi, {{user.first_name}} {{user.last_name}}!
+    {% if user.is_authenticated %}
+        <section class="section">
+            <span><p>Hi, {{ user.first_name }} {{ user.last_name }}!     <p>If you need to change your password, <a
+                    href="{% url 'password_change' %}">click here</a>.</p></p></span>
+        </section>
+        <div class="columns">
+        <div class="column">
+            <section class="section">
+                <h1 class="title">As Prophet:</h1>
+                <div class="box">
+                    <p><a href="{% url 'practicumweb:newprophecy' %}">Create Prophecy</a></p>
+                </div>
+                <div class="box">
+                    <p>Prophecies in Draft Status</p>
+                    <ul>
+                        {% for draft_prophecy in draft_prophecies %}
+                            <li><a href="{{ draft_prophecy.get_absolute_url }}">{{ draft_prophecy }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
 
-<h1>As Prophet:</h1>
-<p><a href="{% url 'practicumweb:newprophecy' %}">Create Prophecy</a></p>
-
-<p>Prophecies in Draft Status</p>
-<ul>
-{% for draft_prophecy in draft_prophecies %}
-    <li><a href="{{draft_prophecy.get_absolute_url}}">{{ draft_prophecy }}</a></li>
-{% endfor %}
-</ul>
-
-<p>Published Prophecies</p>
-<ul>
-{% for published_prophecy in published_prophecies %}
-        {%  if published_prophecy in feedback_list %}
-            <li><a href="{{published_prophecy.get_absolute_url}}"> {{ published_prophecy }} There is Feedback!</a></li>
-        {% else %}
-            <li><a href="{{published_prophecy.get_absolute_url}}"> {{ published_prophecy }}</a></li>
-        {%  endif %}
-{% endfor %}
-</ul>
-<h2>As Supplicant:</h2>
-<p>Prophecies for Me</p>
-<ul>
-{% for prophecy_for_me in prophecies_for_me %}
-    <li><a href="{{prophecy_for_me.get_absolute_url}}">{{ prophecy_for_me }}</a></li>
-{% endfor %}
-</ul>
-
-{% else %}
-<p>You are not logged in</p>
-<a href="{% url 'login' %}">Log In</a>
-{% endif %}
-
-If you need to change your password, <a href="{% url 'password_change' %}">click here</a>.
+                <div class="box">
+                    <h2 class="title">Published Prophecies</h2>
+                    <table class="table is-hoverable">
+                        <thead>
+                        <tr>
+                            <th>Practicum Week</th>
+                            <th>Published Date</th>
+                            <th>Feedback</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for published_prophecy in published_prophecies %}
+                            <tr>
+                                <th>{{ published_prophecy.week_name }}</th>
+                                {% if published_prophecy in feedback_list %}
+                                    <td>
+                                        <a href="{{ published_prophecy.get_absolute_url }}"> {{ published_prophecy }}</a>
+                                    </td>
+                                    <td>There is Feedback!</td>
+                                {% else %}
+                                    <td>
+                                        <a href="{{ published_prophecy.get_absolute_url }}"> {{ published_prophecy }}</a>
+                                    </td>
+                                    <td></td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+        <div class="column">
+        <section class="section">
+            <h1 class="title">As Supplicant:</h1>
+            <div class="box">
+                <h2 class="title">Prophecies For Me</h2>
+                <table class="table is-hoverable">
+                    <thead>
+                    <tr>
+                        <th>Practicum Week</th>
+                        <th>Published Date</th>
+                        <th>Feedback</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for prophecy_for_me in prophecies_for_me %}
+                        <tr>
+                            <th>{{ prophecy_for_me.week_name }}</th>
+                            {% if prophecy_for_me in feedback_list %}
+                                <td><a href="{{ prophecy_for_me.get_absolute_url }}"> {{ prophecy_for_me }}</a>
+                                </td>
+                                <td>You Have Provided Feedback!</td>
+                            {% else %}
+                                <td><a href="{{ prophecy_for_me.get_absolute_url }}"> {{ prophecy_for_me }}</a>
+                                </td>
+                                <td></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+</div>
 {% endblock %}
