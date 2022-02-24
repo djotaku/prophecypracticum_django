@@ -6,23 +6,20 @@
     <section class="section">
         <div class="container is-fluid">
             <p>Push the button below to randomly add supplicants to prophets.</p>
-            <div class="box"
-            <form action='.' method="post">
-                {% for field in user_selection_form.visible_fields %}
-                    {% csrf_token %}
-                    <div class="field">
-                        <label class="label">{{ field.label_tag }}</label>
-                        <div class="control">
-                            {% render_field field class="checkbox" %}
+            <div class="box">
+                <form action='.' method="post">
+                    {% for field in user_selection_form.visible_fields %}
+                        {% csrf_token %}
+                        <div class="field">
+                            <label class="label">{{ field.label_tag }}</label>
+                            <div class="control">
+                                {% render_field field class="checkbox" %}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button type="submit" class="button is-rounded is-primary">Randomize!</button>
-                    </div>
-                </div>
-            </form>
+                    {% endfor %}
+                    <input type="submit" class="button is-rounded is-primary" value="Randomize!">
+                </form>
+            </div>
         </div>
         </div>
     </section>
