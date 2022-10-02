@@ -118,11 +118,11 @@ def new_feedback(request, prophecy_id):
     feedback = None
     feedback_status = None
     prophecy = Prophecy.objects.get_queryset().filter(id=prophecy_id)
-    week_name = prophecy[0].week_name
-
     if request.method == "POST":
         # A feedback was posted
         feedback_form = ProphecyRatingForm(data=request.POST)
+        week_name = prophecy[0].week_name
+
         if feedback_form.is_valid():
             # create it, but don't save to database yet
             feedback = feedback_form.save(commit=False)
@@ -154,17 +154,17 @@ def randomizer(request):
         user_selection_form = RandomizeForm(data=request.POST)
         if user_selection_form.is_valid():
             users = user_selection_form.cleaned_data['participants']
-            randomized_prophet_pool = random.sample(list(users), len(list(users)))
-            randomized_supplicant_pool = random.sample(list(users), len(list(users)))
+            users_list = list(users)
+            randomized_prophet_pool = random.sample(users_list, len(users_list))
+            randomized_supplicant_pool = random.sample(users_list, len(users_list))
             combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
             sunday = find_sunday()
             week_name = sunday.strftime('%Y%m%d')
             for pair in combined_list:
-                if pair[0] is None:
-                    database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[1], supplicant=pair[1],
-                                                week_name=week_name)
-                elif pair[1] is None:
-                    database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[0],
+                if pair[0] == pair[1]:
+                    user_list_without_self = [user for user in users_list if user is not pair[0]]
+                    database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0],
+                                                supplicant=random.choice(user_list_without_self),
                                                 week_name=week_name)
                 else:
                     database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1],
