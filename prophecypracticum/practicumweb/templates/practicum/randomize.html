@@ -5,22 +5,42 @@
 {% block content %}
     <section class="section">
         <div class="container is-fluid">
-            <p>Push the button below to randomly add supplicants to prophets.</p>
-            <div class="box">
-                <form action='.' method="post">
-                    {% for field in user_selection_form.visible_fields %}
-                        {% csrf_token %}
-                        <div class="field">
-                            <label class="label">{{ field.label_tag }}</label>
-                            <div class="control">
-                                {% render_field field class="checkbox" %}
+            {% if user_selection_form %}
+                <p>Push the button below to randomly add supplicants to prophets.</p>
+                <div class="box">
+                    <form action='.' method="post">
+                        {% for field in user_selection_form.visible_fields %}
+                            {% csrf_token %}
+                            <div class="field">
+                                <label class="label">{{ field.label_tag }}</label>
+                                <div class="control">
+                                    {% render_field field class="checkbox" %}
+                                </div>
                             </div>
-                        </div>
+                        {% endfor %}
+                        <input type="submit" class="button is-rounded is-primary" value="Randomize!">
+                    </form>
+                </div>
+            {% endif %}
+            {% if pairs %}
+                <p>Results of the randomizer:</p>
+                <table class="table is-hoverable">
+                    <thead>
+                    <tr>
+                        <th>Prophet</th>
+                        <th>Supplicant</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for prophet, supplicant in pairs.items %}
+                        <tr>
+                            <td>{{ prophet.first_name}} {{prophet.last_name}}</td>
+                            <td>{{ supplicant.first_name }} {{ supplicant.last_name }}</td>
+                        </tr>
                     {% endfor %}
-                    <input type="submit" class="button is-rounded is-primary" value="Randomize!">
-                </form>
-            </div>
-        </div>
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
     </section>
     <a href="{% url 'practicumweb:home' %}">Return to Home Page</a>

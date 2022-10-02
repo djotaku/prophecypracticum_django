@@ -160,21 +160,26 @@ def randomizer(request):
             combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
             sunday = find_sunday()
             week_name = sunday.strftime('%Y%m%d')
+            pairs = {}
             for pair in combined_list:
                 if pair[0] == pair[1]:
                     user_list_without_self = [user for user in users_list if user is not pair[0]]
+                    new_supplicant = random.choice(user_list_without_self)
+                    pairs[pair[0]] = new_supplicant
                     database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0],
-                                                supplicant=random.choice(user_list_without_self),
+                                                supplicant=new_supplicant,
                                                 week_name=week_name)
                 else:
                     database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1],
                                                 week_name=week_name)
+                    pairs[pair[0]] = pair[1]
                 database_entry.save()
             weekly_name_entry = PracticumNames(week_name=week_name)
             weekly_name_entry.save()
+            return render(request, 'practicum/randomize.html', {'pairs': pairs})
     else:
         user_selection_form = RandomizeForm()
-    return render(request, 'practicum/randomize.html', {'user_selection_form': user_selection_form})
+        return render(request, 'practicum/randomize.html', {'user_selection_form': user_selection_form})
 
 
 @login_required
