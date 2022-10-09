@@ -16,14 +16,14 @@
 
         <div class="columns">
             <div class="column">
-                <p>Hitting submit will email the Prophet to let them know they have a prophecy to read.</p>
+                <p>Hitting submit will email the Prophet to let them know they have a feedback to read.</p>
 
                 <div class="card">
                     <header class="card-header">
                         <p class="card-header-title">The Prophecy</p>
                     </header>
 
-                    {{ prophecy.prophecy_text }}
+                    {{ prophecy.prophecy_text|safe }}
                 </div>
             </div>
             <div class="column">
