@@ -30,7 +30,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ['prophecypracticum.ericmesa.com', '127.0.0.1']
 ALLOWED_ORIGINS = ['prophecypracticum.ericmesa.com', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['http://*', 'http://localhost:8000', 'http://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = ['http://*', 'http://localhost', 'http://127.0.0.1']
 # CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS.copy()
 
 # Application definition
