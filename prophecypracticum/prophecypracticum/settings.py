@@ -29,8 +29,8 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ['prophecypracticum.ericmesa.com', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['http://prophecypracticum.ericmesa.com*',
-                        'https://prophecypracticum.ericmesa.com*']
+CSRF_TRUSTED_ORIGINS = ['http://*',
+                        'https://*']
 
 # Application definition
 
