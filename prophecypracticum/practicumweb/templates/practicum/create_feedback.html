@@ -1,5 +1,8 @@
 {% extends 'practicum/base.html' %}
 {% load widget_tweaks %}
+{% load static %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 {% block content %}
     {% if new_feedback %}
         <div class="notification is-success" xmlns="http://www.w3.org/1999/html">
@@ -32,6 +35,7 @@
                     Please limit your rating to between 1 and 5.
 
                     <form action='.' method="post">
+                        {{ feedback_form.media }}
                         {% for field in feedback_form.visible_fields %}
                             <div class="field">
                                 <label class="label">{{ field.label_tag }}</label>

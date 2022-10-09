@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from ckeditor.fields import RichTextField
 
 
 class PublishedManager(models.Manager):
@@ -11,7 +12,8 @@ class PublishedManager(models.Manager):
 
 class Prophecy(models.Model):
     STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
-    prophecy_text = models.TextField()
+    prophecy_text = RichTextField(blank=True, null=True)
+    #prophecy_text = models.TextField()
     # prophecy_photo = models.FileField() - may want to use ImageField, but either way see ...takes a few steps in URL https://docs.djangoproject.com/en/3.1/ref/models/fields/#filefield
     prophet = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="my_prophecies")
     supplicant = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="received_prophecies")
@@ -38,7 +40,8 @@ class ProphecyFeedback(models.Model):
     """Holds feedback for a particular prophecy."""
     STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
     feedback_rating = models.PositiveIntegerField()
-    feedback_text = models.TextField()
+    feedback_text = RichTextField(blank=True, null=True)
+    # feedback_text = models.TextField()
     prophecy = models.ForeignKey(Prophecy, on_delete=models.CASCADE, related_name="my_rating")
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
