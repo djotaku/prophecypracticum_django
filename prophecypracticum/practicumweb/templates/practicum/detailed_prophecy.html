@@ -6,10 +6,11 @@
         {% if status == "published" %}
             <div class="box box-shadow">
                 <h2 class="title is-size-3">Text:</h2>
-                <p>{{ prophecy.prophecy_text }} </p>
+                <p>{{ prophecy.prophecy_text|safe }} </p>
             </div>
         {% else %}
             <form action='.' method="post">
+                {{ prophecy_form.media }}
                 {{ prophecy_form.as_p }}
                 {% csrf_token %}
                 <p><input type="submit" value="Submit"></p></form>
@@ -20,7 +21,7 @@
             {% if feedback and feedback_status == "published" %}
                 <h2 class="title is-size-3">Feedback:</h2>
                 <p>Rating: {{ feedback.feedback_rating }}</p>
-                <p>Text: {{ feedback.feedback_text }}</p>
+                <p>Text: {{ feedback.feedback_text|safe }}</p>
             {% endif %}
         </div>
     </section>
