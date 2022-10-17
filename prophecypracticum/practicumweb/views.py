@@ -53,7 +53,6 @@ def new_prophecy(request):
                           [supplicant.email],
                           fail_silently=False)
     else:
-        messages.success(request, "test debug message")
         prophecy_form = ProphecyForm()
         weekly_selection_form = PracticumNamesForm()
     return render(request, 'practicum/create_prophecy.html',
@@ -84,7 +83,7 @@ def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
     feedback_status = None
     what_am_i = None
     if request.method == "POST":
-        # Changed from Draft to Published
+        # Changes made to prophecy
         prophecy_form = ProphecyForm(data=request.POST)
         if prophecy_form.is_valid():
             # create it, but don't save to database yet
@@ -95,7 +94,9 @@ def detailed_prophecy(request, year, month, day, prophet, supplicant, status):
             prophecy.prophecy_text = new_prophecy_text
             supplicant = prophecy.supplicant
             prophecy.save()
+            messages.success(request, "Your prophecy has been saved.")
             if prophecy.status == "published":
+                messages.success(request, "Your prophecy has been published.")
                 send_mail('You have a prophecy to read',
                           'Sign in at http://prophecypracticum.ericmesa.com/accounts/login/ site to see it.',
                           'prophecypracticum@ericmesa.com',
