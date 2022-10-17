@@ -30,4 +30,5 @@ class WeekNameChoiceField(forms.ModelChoiceField):
 
 
 class PracticumNamesForm(forms.Form):
-    practicum_week = WeekNameChoiceField(queryset=PracticumNames.objects.all().order_by('-week_name'), widget=forms.Select)
+    practicum_week = WeekNameChoiceField(queryset=PracticumNames.objects.all().order_by('-week_name'),
+                                         widget=forms.Select)
