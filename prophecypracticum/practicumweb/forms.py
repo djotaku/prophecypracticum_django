@@ -5,7 +5,7 @@ from .models import Prophecy, ProphecyFeedback, User, PracticumNames
 class ProphecyForm(forms.ModelForm):
     class Meta:
         model = Prophecy
-        fields = ('prophecy_text',)
+        fields = ('prophecy_text', 'status')
 
 
 class ProphecyRatingForm(forms.ModelForm):
@@ -30,4 +30,5 @@ class WeekNameChoiceField(forms.ModelChoiceField):
 
 
 class PracticumNamesForm(forms.Form):
-    practicum_week = WeekNameChoiceField(queryset=PracticumNames.objects.all(), widget=forms.Select)
+    practicum_week = WeekNameChoiceField(queryset=PracticumNames.objects.all().order_by('-week_name'),
+                                         widget=forms.Select)

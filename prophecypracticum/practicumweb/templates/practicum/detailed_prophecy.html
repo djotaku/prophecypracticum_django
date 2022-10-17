@@ -1,17 +1,27 @@
 {% extends 'practicum/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
 
 {% block content %}
     <section class="section">
-        <h1 class="title is-size-1">Here is your prophecy! </h1>
         {% if status == "published" %}
+            <h1 class="title is-size-1">Here is your prophecy! </h1>
             <div class="box box-shadow">
                 <h2 class="title is-size-3">Text:</h2>
                 <p>{{ prophecy.prophecy_text|safe }} </p>
             </div>
         {% else %}
+            <h1 class="title is-size-1"> Edit Your Draft Prophecy </h1>
             <form action='.' method="post">
                 {{ prophecy_form.media }}
-                {{ prophecy_form.as_p }}
+                {% for field in prophecy_form.visible_fields %}
+                    <div class="field">
+                        <label class="label">{{ field.label_tag }}</label>
+                        <div class="control">
+                            {% render_field field class="input" %}
+                        </div>
+                    </div>
+                {% endfor %}
                 {% csrf_token %}
                 <p><input type="submit" value="Submit"></p></form>
         {% endif %}
