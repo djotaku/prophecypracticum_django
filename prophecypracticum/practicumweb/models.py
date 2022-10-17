@@ -13,7 +13,6 @@ class PublishedManager(models.Manager):
 class Prophecy(models.Model):
     STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
     prophecy_text = RichTextField(blank=True, null=True)
-    #prophecy_text = models.TextField()
     # prophecy_photo = models.FileField() - may want to use ImageField, but either way see ...takes a few steps in URL https://docs.djangoproject.com/en/3.1/ref/models/fields/#filefield
     prophet = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="my_prophecies")
     supplicant = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="received_prophecies")
