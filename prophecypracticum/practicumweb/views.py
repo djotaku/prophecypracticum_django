@@ -2,6 +2,7 @@ import random
 from datetime import datetime, timedelta
 from itertools import zip_longest
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404
@@ -43,13 +44,16 @@ def new_prophecy(request):
             prophecy.supplicant = supplicant
             prophecy.week_name = selected_week
             prophecy.save()
+            messages.success(request, "Your prophecy has been saved.")
             if prophecy.status == "published":
+                messages.success(request, "Your prophecy has been published.")
                 send_mail('You have a prophecy to read',
                           'Sign in at http://prophecypracticum.ericmesa.com/accounts/login/ site to see it.',
                           'prophecypracticum@ericmesa.com',
                           [supplicant.email],
                           fail_silently=False)
     else:
+        messages.success(request, "test debug message")
         prophecy_form = ProphecyForm()
         weekly_selection_form = PracticumNamesForm()
     return render(request, 'practicum/create_prophecy.html',

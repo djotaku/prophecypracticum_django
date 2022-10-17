@@ -4,6 +4,24 @@
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <article class="message is-{% if message.tags %}{{ message.tags }}{% endif %}">
+                <div class="message-header">
+                    <p>{% if message.tags %}{{ message.tags }}{% endif %}</p>
+                    <button class="delete" aria-label="delete"></button>
+                </div>
+            <div class="message-body">
+                {{ message }}
+            </div>
+            </article>
+        {% endfor %}
+        {% comment %}        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="message is-{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>{% endcomment %}
+    {% endif %}
     {% if new_prophecy %}
         <div class="notification is-success">
             <h2 class="title">Your Prophecy has been recorded</h2>
