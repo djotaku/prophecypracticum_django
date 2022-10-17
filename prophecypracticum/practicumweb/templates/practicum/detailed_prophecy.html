@@ -3,6 +3,18 @@
 {% load static %}
 
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <article class="message is-{% if message.tags %}{{ message.tags }}{% endif %}">
+                <div class="message-header">
+                    <p>{% if message.tags %}{{ message.tags }}{% endif %}</p>
+                </div>
+                <div class="message-body">
+                    {{ message }}
+                </div>
+            </article>
+        {% endfor %}
+    {% endif %}
     <section class="section">
         {% if status == "published" %}
             <h1 class="title is-size-1">Here is your prophecy! </h1>
