@@ -1,5 +1,6 @@
 Django == 4.2.6
 django-ckeditor
+django-widget-tweaks
 gunicorn
 python-dotenv
 pytz
