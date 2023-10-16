@@ -160,6 +160,7 @@ def randomizer(request):
         if user_selection_form.is_valid():
             users = user_selection_form.cleaned_data['participants']
             users_list = list(users)
+            random.shuffle(users_list)
             randomized_prophet_pool = random.sample(users_list, len(users_list))
             randomized_supplicant_pool = random.sample(users_list, len(users_list))
             combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
