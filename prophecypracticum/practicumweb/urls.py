@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 from django.views.generic.base import TemplateView
+from django.conf import settings
+from django.urls import path, include
+from django.conf.urls.static import static
 
 app_name = 'practicumweb'
 
@@ -14,3 +17,4 @@ urlpatterns = [
     path('statuscheck/', views.status_check, name="status check"),
     path('intructions/', TemplateView.as_view(template_name='instructions.html'), name="instructions"),
 ]
+

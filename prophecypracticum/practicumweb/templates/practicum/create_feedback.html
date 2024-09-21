@@ -1,8 +1,8 @@
 {% extends 'practicum/base.html' %}
 {% load widget_tweaks %}
-{% load static %}
-<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{%  block header %}
+    {{ prophecy_form.media }}
+{% endblock %}
 {% block content %}
     {% if new_feedback %}
         <div class="notification is-success" xmlns="http://www.w3.org/1999/html">
@@ -40,7 +40,7 @@
                             <div class="field">
                                 <label class="label">{{ field.label_tag }}</label>
                                 <div class="control">
-                                    {% render_field field class="input" %}
+                                    {% render_field field%}
                                 </div>
                             </div>
                         {% endfor %}
