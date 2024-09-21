@@ -1,8 +1,8 @@
 {% extends 'practicum/base.html' %}
 {% load widget_tweaks %}
-{% load static %}
-<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{%  block header %}
+    {{ prophecy_form.media }}
+{% endblock %}
 {% block content %}
     {% if messages %}
         {% for message in messages %}
@@ -29,12 +29,12 @@
         <section class="section">
             <div class="container is-fluid">
                 <form action='.' method="post">
-                    {{ prophecy_form.media }}
                     {% for field in prophecy_form.visible_fields %}
+                        {{ prophecy_form.media }}
                         <div class="field">
                             <label class="label">{{ field.label_tag }}</label>
                             <div class="control">
-                                {% render_field field class="input" %}
+                                {% render_field field %}
                             </div>
                         </div>
                     {% endfor %}

@@ -1,17 +1,27 @@
 from django import forms
 from .models import Prophecy, ProphecyFeedback, User, PracticumNames
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 
 class ProphecyForm(forms.ModelForm):
     class Meta:
         model = Prophecy
         fields = ('prophecy_text', 'status')
-
+        widgets = {
+            "Text": CKEditor5Widget(
+                attrs={"class": "django_ckeditor_5"}, config_name="extends"
+            )
+        }
 
 class ProphecyRatingForm(forms.ModelForm):
     class Meta:
         model = ProphecyFeedback
         fields = ('feedback_rating', 'feedback_text', )
+        widgets = {
+            "Text": CKEditor5Widget(
+                attrs={"class": "django_ckeditor_5"}, config_name="comment"
+            )
+        }
 
 
 class RandomizedModelMultipleChoiceField(forms.ModelMultipleChoiceField):
