@@ -72,6 +72,7 @@
             <h1 class="title">As Supplicant:</h1>
             <div class="box">
                 <h2 class="title">Prophecies For Me</h2>
+            <a class="button is-rounded is-primary" href="{{ home }}?show_all_supplicant=true">Show All Prophecies (reveal hidden)</a>
                 <table class="table is-hoverable">
                     <thead>
                     <tr>
@@ -93,6 +94,14 @@
                                 </td>
                                 <td></td>
                             {% endif %}
+                           <td>
+                                    <a class="button is-rounded is-primary" href="{{ home }}?hide_prophecy_supplicant={{ prophecy_for_me.id }}">
+                                        Click to Hide
+                                    </a>
+                                    <a class="button is-rounded is-info" href="{{ home }}?reveal_prophecy_supplicant={{ prophecy_for_me.id }}">
+                                        Click to Un-Hide
+                                    </a>
+                                </td>
                         </tr>
                     {% endfor %}
                     </tbody>

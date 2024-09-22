@@ -66,19 +66,33 @@ def home(request):
     if prophecy := request.GET.get("hide_prophecy", None):
         prophecy_to_modify = Prophecy.objects.get_queryset().filter(id=prophecy)
         the_prophecy = prophecy_to_modify[0]
-        the_prophecy.hidden=True
+        the_prophecy.hidden_for_prophet=True
         the_prophecy.save()
     if prophecy := request.GET.get("reveal_prophecy", None):
         prophecy_to_modify = Prophecy.objects.get_queryset().filter(id=prophecy)
         the_prophecy = prophecy_to_modify[0]
-        the_prophecy.hidden=False
+        the_prophecy.hidden_for_prophet=False
         the_prophecy.save()
     if request.GET.get("show_all", None):
         published_prophecies = Prophecy.objects.get_queryset().filter(status='published', prophet=user)
     else:
-        published_prophecies = Prophecy.objects.get_queryset().filter(status='published', prophet=user, hidden=False)
+        published_prophecies = Prophecy.objects.get_queryset().filter(status='published', prophet=user, hidden_for_prophet=False)
     draft_prophecies = Prophecy.objects.get_queryset().filter(status='draft', prophet=user)
-    prophecies_for_me = Prophecy.objects.get_queryset().filter(status='published', supplicant=user)
+    if prophecy := request.GET.get("hide_prophecy_supplicant", None):
+        prophecy_to_modify = Prophecy.objects.get_queryset().filter(id=prophecy)
+        the_prophecy = prophecy_to_modify[0]
+        the_prophecy.hidden_for_supplicant=True
+        the_prophecy.save()
+    if prophecy := request.GET.get("reveal_prophecy_supplicant", None):
+        prophecy_to_modify = Prophecy.objects.get_queryset().filter(id=prophecy)
+        the_prophecy = prophecy_to_modify[0]
+        the_prophecy.hidden_for_supplicant=False
+        the_prophecy.save()
+    if request.GET.get("show_all_supplicant", None):
+        prophecies_for_me = Prophecy.objects.get_queryset().filter(status='published', supplicant=user)
+    else:
+        prophecies_for_me = Prophecy.objects.get_queryset().filter(status='published', supplicant=user, hidden_for_supplicant=False)
+
     feedbacks = ProphecyFeedback.objects.get_queryset().filter(status='published')
     feedback_list = [feedback.prophecy for feedback in feedbacks]
     return render(request, 'practicum/home.html',
