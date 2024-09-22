@@ -22,6 +22,7 @@ class Prophecy(models.Model):
     updated = models.DateTimeField(auto_now=True)
     week_name = models.CharField(max_length=8, default="00000000")
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='published')
+    hidden = models.BooleanField(default=False)
     objects = models.Manager()
     published = PublishedManager()
 

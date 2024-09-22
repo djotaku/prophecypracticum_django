@@ -6,7 +6,7 @@
     {% if user.is_authenticated %}
         <section class="section">
             <span><p>Hi, {{ user.first_name }} {{ user.last_name }}!     <p>If you need to change your password, <a
-                    href="{% url 'password_change' %}">click here</a>.</p></p></span>
+                    href="{% url 'password_change' %}">click here</a>.</p></span>
         </section>
         <div class="columns">
         <div class="column">
@@ -49,6 +49,11 @@
                                     </td>
                                     <td></td>
                                 {% endif %}
+                            <td>
+
+                                <a href="{{ home }}?prophecy={{ published_prophecy.id }}"><button class="button is-rounded is-primary">Click to Hide</button></a>
+
+                            </td>
                             </tr>
                         {% endfor %}
                         </tbody>

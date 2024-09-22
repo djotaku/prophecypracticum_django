@@ -63,7 +63,12 @@ def new_prophecy(request):
 @login_required()
 def home(request):
     user = request.user
-    published_prophecies = Prophecy.objects.get_queryset().filter(status='published', prophet=user)
+    if prophecy := request.GET.get("prophecy", None):
+        prophecy_to_modify = Prophecy.objects.get_queryset().filter(id=prophecy)
+        the_prophecy = prophecy_to_modify[0]
+        the_prophecy.hidden=True
+        the_prophecy.save()
+    published_prophecies = Prophecy.objects.get_queryset().filter(status='published', prophet=user, hidden=False)
     draft_prophecies = Prophecy.objects.get_queryset().filter(status='draft', prophet=user)
     prophecies_for_me = Prophecy.objects.get_queryset().filter(status='published', supplicant=user)
     feedbacks = ProphecyFeedback.objects.get_queryset().filter(status='published')
