@@ -26,6 +26,8 @@
 
                 <div class="box">
                     <h2 class="title">Published Prophecies</h2>
+                    <a class="button is-rounded is-primary" href="{{ home }}?show_all=true">Show All Prophecies (reveal hidden)</a>
+
                     <table class="table is-hoverable">
                         <thead>
                         <tr>
@@ -49,11 +51,15 @@
                                     </td>
                                     <td></td>
                                 {% endif %}
-                            <td>
+                                <td>
 
-                                <a href="{{ home }}?prophecy={{ published_prophecy.id }}"><button class="button is-rounded is-primary">Click to Hide</button></a>
-
-                            </td>
+                                    <a class="button is-rounded is-primary" href="{{ home }}?hide_prophecy={{ published_prophecy.id }}">
+                                        Click to Hide
+                                    </a>
+                                    <a class="button is-rounded is-info" href="{{ home }}?reveal_prophecy={{ published_prophecy.id }}">
+                                        Click to Un-Hide
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
