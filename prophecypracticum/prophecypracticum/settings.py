@@ -34,7 +34,7 @@ CSRF_TRUSTED_ORIGINS = ['http://*', 'http://localhost', 'http://127.0.0.1', 'htt
 # CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS.copy()
 
 LOGIN_REDIRECT_URL = '/practicum/'
-# LOGOUT_REDIRECT_URL = '/practicum/'
+LOGOUT_REDIRECT_URL = '/practicum/'
 
 # Application definition
 
