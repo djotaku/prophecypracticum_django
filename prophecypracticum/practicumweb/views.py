@@ -190,22 +190,21 @@ def randomizer(request):
             random.shuffle(users_list)
             randomized_prophet_pool = random.sample(users_list, len(users_list))
             randomized_supplicant_pool = random.sample(users_list, len(users_list))
-            combined_list = zip_longest(randomized_prophet_pool, randomized_supplicant_pool)
             sunday = find_sunday()
             week_name = sunday.strftime('%Y%m%d')
             pairs = {}
-            for pair in combined_list:
-                if pair[0] == pair[1]:
-                    user_list_without_self = [user for user in users_list if user is not pair[0]]
-                    new_supplicant = random.choice(user_list_without_self)
-                    pairs[pair[0]] = new_supplicant
-                    database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0],
-                                                supplicant=new_supplicant,
-                                                week_name=week_name)
-                else:
-                    database_entry = WeeklyLink(sunday_date=sunday, prophet=pair[0], supplicant=pair[1],
-                                                week_name=week_name)
-                    pairs[pair[0]] = pair[1]
+            # to guard against last guy getting himself
+            if randomized_prophet_pool[-1] == randomized_supplicant_pool[-1]:
+                move_to_top = randomized_supplicant_pool.pop()
+                randomized_supplicant_pool.insert(0, move_to_top)
+            for potential_prophet in randomized_prophet_pool:
+                potential_supplicant = randomized_supplicant_pool.pop()
+                if potential_prophet == potential_supplicant:
+                    randomized_supplicant_pool.insert(0, potential_supplicant)
+                    potential_supplicant = randomized_supplicant_pool.pop()
+                pairs[potential_prophet] = potential_supplicant
+                database_entry = WeeklyLink(sunday_date=sunday, prophet=potential_prophet,
+                                            supplicant=potential_supplicant, week_name=week_name)
                 database_entry.save()
             weekly_name_entry = PracticumNames(week_name=week_name)
             weekly_name_entry.save()
