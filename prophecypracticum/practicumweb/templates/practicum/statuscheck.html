@@ -30,6 +30,16 @@
         {% else %}
             No one has completed any prophecies for this week.
         {% endif %}
+        <table class="table is-hoverable">
+            <thead>
+            <tr>
+                <th>Prophecy Status</th>
+                <th>Prophet</th>
+                <th>Supplicant</th>
+                <th>Feedback Status</th>
+            </tr>
+            </thead>
+            <tbody>
     {% for link in linked_users %}
         {% if link.prophet in incomplete_prophets %}
             <tr>
