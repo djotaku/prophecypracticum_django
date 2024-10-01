@@ -1,6 +1,6 @@
 import random
 from datetime import datetime, timedelta
-from itertools import zip_longest
+
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -187,25 +187,15 @@ def randomizer(request):
         if user_selection_form.is_valid():
             users = user_selection_form.cleaned_data['participants']
             users_list = list(users)
-            random.shuffle(users_list)
-            randomized_prophet_pool = random.sample(users_list, len(users_list))
-            randomized_supplicant_pool = random.sample(users_list, len(users_list))
             sunday = find_sunday()
             week_name = sunday.strftime('%Y%m%d')
             pairs = {}
-            # to guard against last guy getting himself
-            if randomized_prophet_pool[-1] == randomized_supplicant_pool[-1]:
-                move_to_top = randomized_supplicant_pool.pop()
-                randomized_supplicant_pool.insert(0, move_to_top)
-            for potential_prophet in randomized_prophet_pool:
-                potential_supplicant = randomized_supplicant_pool.pop()
-                if potential_prophet == potential_supplicant:
-                    randomized_supplicant_pool.insert(0, potential_supplicant)
-                    potential_supplicant = randomized_supplicant_pool.pop()
+            random.shuffle(users_list)
+            for potential_prophet, potential_supplicant in zip(users_list, users_list[1:] + users_list[:1]):
                 pairs[potential_prophet] = potential_supplicant
-                database_entry = WeeklyLink(sunday_date=sunday, prophet=potential_prophet,
+            database_entry = WeeklyLink(sunday_date=sunday, prophet=potential_prophet,
                                             supplicant=potential_supplicant, week_name=week_name)
-                database_entry.save()
+            database_entry.save()
             weekly_name_entry = PracticumNames(week_name=week_name)
             weekly_name_entry.save()
             return render(request, 'practicum/randomize.html', {'pairs': pairs})
