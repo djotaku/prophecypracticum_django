@@ -193,9 +193,9 @@ def randomizer(request):
             random.shuffle(users_list)
             for potential_prophet, potential_supplicant in zip(users_list, users_list[1:] + users_list[:1]):
                 pairs[potential_prophet] = potential_supplicant
-            database_entry = WeeklyLink(sunday_date=sunday, prophet=potential_prophet,
+                database_entry = WeeklyLink(sunday_date=sunday, prophet=potential_prophet,
                                             supplicant=potential_supplicant, week_name=week_name)
-            database_entry.save()
+                database_entry.save()
             weekly_name_entry = PracticumNames(week_name=week_name)
             weekly_name_entry.save()
             return render(request, 'practicum/randomize.html', {'pairs': pairs})
